@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>New Meeting Assignment</title>
+	<style>
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			margin: 0;
+			padding: 0;
+			background-color: #f5f5f5;
+		}
+		.email-container {
+			max-width: 600px;
+			margin: 20px auto;
+			background: white;
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+		}
+		.email-header {
+			background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+			color: white;
+			padding: 30px 20px;
+			text-align: center;
+		}
+		.email-header h1 {
+			margin: 0;
+			font-size: 24px;
+			font-weight: 700;
+		}
+		.email-header .icon {
+			width: 60px;
+			height: 60px;
+			background: white;
+			border-radius: 50%;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 15px;
+		}
+		.email-header .icon svg {
+			width: 35px;
+			height: 35px;
+			color: #8b5cf6;
+		}
+		.email-body {
+			padding: 30px 20px;
+		}
+		.intro-text {
+			font-size: 16px;
+			margin-bottom: 25px;
+			color: #4b5563;
+		}
+		.booking-reference {
+			background: #faf5ff;
+			border-left: 4px solid #8b5cf6;
+			padding: 15px 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+		}
+		.booking-reference strong {
+			color: #6b21a8;
+			font-size: 18px;
+		}
+		.details-section {
+			margin: 25px 0;
+		}
+		.details-section h2 {
+			font-size: 18px;
+			color: #1f2937;
+			margin-bottom: 15px;
+			border-bottom: 2px solid #e5e7eb;
+			padding-bottom: 8px;
+		}
+		.detail-row {
+			display: flex;
+			padding: 12px 0;
+			border-bottom: 1px solid #f3f4f6;
+		}
+		.detail-row:last-child {
+			border-bottom: none;
+		}
+		.detail-label {
+			font-weight: 600;
+			color: #6b7280;
+			min-width: 140px;
+		}
+		.detail-value {
+			color: #1f2937;
+			flex: 1;
+		}
+		.meeting-date-time {
+			background: #fef3c7;
+			border-left: 4px solid #f59e0b;
+			padding: 15px 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+		}
+		.meeting-date-time strong {
+			color: #92400e;
+			font-size: 16px;
+			display: block;
+			margin-bottom: 5px;
+		}
+		.meeting-date-time span {
+			color: #78350f;
+			font-size: 14px;
+		}
+		.status-badge {
+			display: inline-block;
+			padding: 4px 12px;
+			border-radius: 12px;
+			font-size: 13px;
+			font-weight: 600;
+		}
+		.status-pending {
+			background: #fef3c7;
+			color: #92400e;
+		}
+		.status-confirmed {
+			background: #d1fae5;
+			color: #065f46;
+		}
+		.customer-info {
+			background: #f0f9ff;
+			padding: 15px;
+			border-radius: 6px;
+			margin: 20px 0;
+		}
+		.customer-info h3 {
+			margin: 0 0 10px 0;
+			color: #1e40af;
+			font-size: 16px;
+		}
+		.actions-section {
+			margin: 30px 0;
+			text-align: center;
+		}
+		.btn {
+			display: inline-block;
+			padding: 12px 24px;
+			margin: 8px;
+			text-decoration: none;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 14px;
+			transition: all 0.3s;
+		}
+		.btn-primary {
+			background: #8b5cf6;
+			color: white;
+		}
+		.btn-primary:hover {
+			background: #7c3aed;
+		}
+		.reminder-box {
+			background: #fffbeb;
+			border: 1px solid #fcd34d;
+			border-radius: 6px;
+			padding: 15px;
+			margin: 20px 0;
+		}
+		.reminder-box strong {
+			color: #92400e;
+			display: block;
+			margin-bottom: 8px;
+		}
+		.reminder-box ul {
+			margin: 8px 0 0 20px;
+			color: #78350f;
+		}
+		.reminder-box li {
+			margin: 5px 0;
+		}
+		.email-footer {
+			background: #f9fafb;
+			padding: 20px;
+			text-align: center;
+			font-size: 12px;
+			color: #6b7280;
+			border-top: 1px solid #e5e7eb;
+		}
+		.email-footer a {
+			color: #8b5cf6;
+			text-decoration: none;
+		}
+		@media only screen and (max-width: 600px) {
+			.email-container {
+				margin: 0;
+				border-radius: 0;
+			}
+			.detail-row {
+				flex-direction: column;
+			}
+			.detail-label {
+				margin-bottom: 5px;
+			}
+			.btn {
+				display: block;
+				margin: 8px 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="email-container">
+		<!-- Header -->
+		<div class="email-header">
+			<div class="icon">
+				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+				</svg>
+			</div>
+			<h1>New Meeting Assignment</h1>
+		</div>
+
+		<!-- Body -->
+		<div class="email-body">
+			<p class="intro-text">
+				You have been assigned to a new meeting with <strong>{{ booking.customer_name }}</strong>.
+			</p>
+
+			<!-- Booking Reference -->
+			<div class="booking-reference">
+				<strong>Booking Reference: {{ booking.booking_reference }}</strong>
+				<p style="margin: 5px 0 0 0; font-size: 14px; color: #6b7280;">
+					Status: <span class="status-badge status-{{ booking.booking_status|lower }}">{{ booking.booking_status }}</span>
+				</p>
+			</div>
+
+			<!-- Meeting Date & Time -->
+			<div class="meeting-date-time">
+				<strong>When:</strong>
+				<span>{{ formatted_start }}</span>
+				<br>
+				<span>Duration: {{ meeting_type.duration }} minutes</span>
+			</div>
+
+			<!-- Meeting Details -->
+			<div class="details-section">
+				<h2>Meeting Details</h2>
+				<div class="detail-row">
+					<div class="detail-label">Meeting Type:</div>
+					<div class="detail-value">{{ meeting_type.meeting_name }}</div>
+				</div>
+				<div class="detail-row">
+					<div class="detail-label">Department:</div>
+					<div class="detail-value">{{ department.department_name }}</div>
+				</div>
+				<div class="detail-row">
+					<div class="detail-label">Location:</div>
+					<div class="detail-value">
+						{% if meeting_type.location_type == "Video Call" %}
+							{{ meeting_type.video_platform }}
+						{% elif meeting_type.location_type == "Phone Call" %}
+							Phone Call
+						{% elif meeting_type.location_type == "In-Person" %}
+							{{ booking.location or "Office location" }}
+						{% else %}
+							{{ meeting_type.location_type }}
+						{% endif %}
+					</div>
+				</div>
+				{% if assigned_users and assigned_users|length > 1 %}
+				<div class="detail-row">
+					<div class="detail-label">Team Members:</div>
+					<div class="detail-value">
+						{% for user in assigned_users %}
+							{{ user.full_name }}{% if not loop.last %}, {% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+			</div>
+
+			<!-- Customer Information -->
+			<div class="customer-info">
+				<h3>Customer Information</h3>
+				<div class="detail-row" style="border-bottom: none; padding: 5px 0;">
+					<div class="detail-label">Name:</div>
+					<div class="detail-value">{{ booking.customer_name }}</div>
+				</div>
+				<div class="detail-row" style="border-bottom: none; padding: 5px 0;">
+					<div class="detail-label">Email:</div>
+					<div class="detail-value"><a href="mailto:{{ booking.customer_email }}" style="color: #2563eb;">{{ booking.customer_email }}</a></div>
+				</div>
+				{% if booking.customer_phone %}
+				<div class="detail-row" style="border-bottom: none; padding: 5px 0;">
+					<div class="detail-label">Phone:</div>
+					<div class="detail-value"><a href="tel:{{ booking.customer_phone }}" style="color: #2563eb;">{{ booking.customer_phone }}</a></div>
+				</div>
+				{% endif %}
+				{% if booking.customer_notes %}
+				<div class="detail-row" style="border-bottom: none; padding: 5px 0; flex-direction: column;">
+					<div class="detail-label" style="margin-bottom: 5px;">Customer Notes:</div>
+					<div class="detail-value" style="background: white; padding: 10px; border-radius: 4px; font-style: italic;">
+						{{ booking.customer_notes }}
+					</div>
+				</div>
+				{% endif %}
+			</div>
+
+			<!-- Preparation Reminder -->
+			<div class="reminder-box">
+				<strong>Before the meeting:</strong>
+				<ul>
+					<li>Review the customer's information and notes above</li>
+					<li>Prepare any necessary materials or documentation</li>
+					{% if meeting_type.location_type == "Video Call" %}
+					<li>Test your video conferencing setup</li>
+					<li>Ensure you have the meeting link ready</li>
+					{% elif meeting_type.location_type == "Phone Call" %}
+					<li>Ensure you have the customer's phone number saved</li>
+					{% elif meeting_type.location_type == "In-Person" %}
+					<li>Confirm the meeting location and directions</li>
+					<li>Notify reception if applicable</li>
+					{% endif %}
+					<li>Add this meeting to your personal calendar</li>
+				</ul>
+			</div>
+
+			<!-- Action Buttons -->
+			<div class="actions-section">
+				<a href="{{ site_url }}/app/mm-meeting-booking/{{ booking.name }}" class="btn btn-primary">View in System</a>
+			</div>
+
+			<p style="font-size: 13px; color: #6b7280; margin-top: 30px; text-align: center;">
+				If you cannot attend this meeting, please update the booking status in the system<br>
+				or contact your department manager immediately.
+			</p>
+		</div>
+
+		<!-- Footer -->
+		<div class="email-footer">
+			<p>
+				This is an automated notification from the Meeting Manager system.<br>
+				<a href="{{ site_url }}/app">Login to your dashboard</a>
+			</p>
+		</div>
+	</div>
+</body>
+</html>

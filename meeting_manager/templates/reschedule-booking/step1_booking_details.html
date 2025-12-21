@@ -1,0 +1,348 @@
+
+<div class="booking-container">
+	<!-- Progress Steps -->
+	<div class="booking-progress">
+		<div class="progress-steps">
+			<div class="progress-step active">
+				<div class="step-number">1</div>
+				<div class="step-label">Current Booking</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">2</div>
+				<div class="step-label">New Date</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">3</div>
+				<div class="step-label">New Time</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">4</div>
+				<div class="step-label">Confirm</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Page Header -->
+	<div class="booking-header">
+		<h1>Reschedule Your Booking</h1>
+		<p class="text-muted">Review your current booking and select a new date and time</p>
+	</div>
+
+	<!-- Current Booking Card -->
+	<div class="booking-card">
+		<div class="card-header">
+			<h2>Current Booking Details</h2>
+		</div>
+		<div class="card-body">
+			<div class="booking-info">
+				<div class="info-row">
+					<div class="info-label">Booking Reference</div>
+					<div class="info-value"><strong>{{ booking.booking_id }}</strong></div>
+				</div>
+				<div class="info-row">
+					<div class="info-label">Customer</div>
+					<div class="info-value">{{ booking.customer_name }}</div>
+				</div>
+				<div class="info-row">
+					<div class="info-label">Email</div>
+					<div class="info-value">{{ booking.customer_email }}</div>
+				</div>
+				<div class="info-row">
+					<div class="info-label">Department</div>
+					<div class="info-value">{{ department.department_name }}</div>
+				</div>
+				<div class="info-row">
+					<div class="info-label">Meeting Type</div>
+					<div class="info-value">{{ meeting_type.meeting_name }}</div>
+				</div>
+				<div class="info-row">
+					<div class="info-label">Duration</div>
+					<div class="info-value">{{ booking.duration }} minutes</div>
+				</div>
+				<div class="info-row highlight">
+					<div class="info-label">Current Date & Time</div>
+					<div class="info-value">
+						<strong>{{ booking.current_date }} at {{ booking.current_time }}</strong>
+					</div>
+				</div>
+				<div class="info-row">
+					<div class="info-label">Status</div>
+					<div class="info-value">
+						<span class="status-badge status-{{ booking.status|lower }}">{{ booking.status }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="action-buttons">
+				<a href="/reschedule-booking?token={{ reschedule_token }}&step=date" class="btn-primary">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+						<line x1="16" y1="2" x2="16" y2="6"></line>
+						<line x1="8" y1="2" x2="8" y2="6"></line>
+						<line x1="3" y1="10" x2="21" y2="10"></line>
+					</svg>
+					Select New Date & Time
+				</a>
+				<a href="/" class="btn-secondary">Cancel</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Important Notes -->
+	<div class="info-box">
+		<h3>Important Information</h3>
+		<ul>
+			<li>After rescheduling, you'll receive a new confirmation email</li>
+			<li>New reschedule and cancel links will be provided</li>
+			<li>Your assigned team member may change based on availability</li>
+			<li>Old reschedule/cancel links will no longer work</li>
+		</ul>
+	</div>
+</div>
+
+<style>
+	.booking-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	/* Progress Steps */
+	.booking-progress {
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.progress-steps {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.progress-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+	}
+
+	.step-number {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: #e5e7eb;
+		color: #6b7280;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+
+	.progress-step.active .step-number {
+		background: #3b82f6;
+		color: white;
+	}
+
+	.progress-step.completed .step-number {
+		background: #10b981;
+		color: white;
+	}
+
+	.step-label {
+		font-size: 0.75rem;
+		color: #6b7280;
+	}
+
+	.progress-step.active .step-label,
+	.progress-step.completed .step-label {
+		color: #1f2937;
+		font-weight: 600;
+	}
+
+	/* Header */
+	.booking-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.booking-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.booking-header .text-muted {
+		color: #6b7280;
+		font-size: 1rem;
+	}
+
+	/* Booking Card */
+	.booking-card {
+		background: white;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		overflow: hidden;
+		margin-bottom: 2rem;
+	}
+
+	.card-header {
+		background: #f9fafb;
+		padding: 1.5rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.card-header h2 {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: #1f2937;
+		margin: 0;
+	}
+
+	.card-body {
+		padding: 2rem;
+	}
+
+	.booking-info {
+		margin-bottom: 2rem;
+	}
+
+	.info-row {
+		display: grid;
+		grid-template-columns: 180px 1fr;
+		padding: 1rem;
+		border-bottom: 1px solid #f3f4f6;
+	}
+
+	.info-row:last-child {
+		border-bottom: none;
+	}
+
+	.info-row.highlight {
+		background: #eff6ff;
+		border-left: 4px solid #3b82f6;
+	}
+
+	.info-label {
+		font-weight: 500;
+		color: #6b7280;
+	}
+
+	.info-value {
+		color: #1f2937;
+	}
+
+	.status-badge {
+		display: inline-block;
+		padding: 0.25rem 0.75rem;
+		border-radius: 9999px;
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.status-confirmed {
+		background: #d1fae5;
+		color: #065f46;
+	}
+
+	.status-pending {
+		background: #fef3c7;
+		color: #92400e;
+	}
+
+	/* Action Buttons */
+	.action-buttons {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.btn-primary, .btn-secondary {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 1rem 1.5rem;
+		border-radius: 8px;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all 0.2s;
+		border: none;
+		cursor: pointer;
+	}
+
+	.btn-primary {
+		background: #3b82f6;
+		color: white;
+	}
+
+	.btn-primary:hover {
+		background: #2563eb;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+	}
+
+	.btn-secondary {
+		background: white;
+		color: #6b7280;
+		border: 2px solid #e5e7eb;
+	}
+
+	.btn-secondary:hover {
+		background: #f9fafb;
+		color: #1f2937;
+	}
+
+	/* Info Box */
+	.info-box {
+		background: #fffbeb;
+		border: 2px solid #fbbf24;
+		border-radius: 12px;
+		padding: 1.5rem;
+	}
+
+	.info-box h3 {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #92400e;
+		margin: 0 0 1rem 0;
+	}
+
+	.info-box ul {
+		margin: 0;
+		padding-left: 1.5rem;
+		color: #78350f;
+	}
+
+	.info-box li {
+		margin-bottom: 0.5rem;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.booking-header h1 {
+			font-size: 1.5rem;
+		}
+
+		.info-row {
+			grid-template-columns: 1fr;
+			gap: 0.5rem;
+		}
+
+		.action-buttons {
+			flex-direction: column;
+		}
+
+		.step-label {
+			font-size: 0.65rem;
+		}
+
+		.step-number {
+			width: 32px;
+			height: 32px;
+			font-size: 0.875rem;
+		}
+	}
+</style>

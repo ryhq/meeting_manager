@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-08 10:07:13.445489",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "event_type",
+  "event_datetime",
+  "column_break_vblm",
+  "event_by",
+  "event_description"
+ ],
+ "fields": [
+  {
+   "description": "Type of event/change",
+   "fieldname": "event_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Event Type",
+   "options": "Created\nConfirmed\nRescheduled\nCancelled\nCompleted\nNo-Show\nApproved\nRejected\nReminder Sent\nCalendar Synced\nAssignment Changed\nCustomer Updated",
+   "reqd": 1
+  },
+  {
+   "default": "Now",
+   "description": "When event occurred",
+   "fieldname": "event_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Event DateTime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vblm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "User who triggered this event",
+   "fieldname": "event_by",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Event By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "description": "Detailed description of the event",
+   "fieldname": "event_description",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Event Description"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-08 10:11:26.234687",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Meeting Booking History",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "event_datetime",
+ "sort_order": "DESC",
+ "states": []
+}

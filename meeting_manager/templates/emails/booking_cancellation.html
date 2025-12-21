@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Booking Cancelled</title>
+	<style>
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			margin: 0;
+			padding: 0;
+			background-color: #f5f5f5;
+		}
+		.email-container {
+			max-width: 600px;
+			margin: 20px auto;
+			background: white;
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+		}
+		.email-header {
+			background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+			color: white;
+			padding: 30px 20px;
+			text-align: center;
+		}
+		.email-header h1 {
+			margin: 0;
+			font-size: 26px;
+			font-weight: 700;
+		}
+		.email-header .icon {
+			width: 60px;
+			height: 60px;
+			background: white;
+			border-radius: 50%;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 15px;
+		}
+		.email-header .icon svg {
+			width: 35px;
+			height: 35px;
+			color: #dc2626;
+		}
+		.email-body {
+			padding: 30px 20px;
+		}
+		.intro-text {
+			font-size: 16px;
+			margin-bottom: 25px;
+			color: #4b5563;
+		}
+		.booking-reference {
+			background: #fef2f2;
+			border-left: 4px solid #ef4444;
+			padding: 15px 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+		}
+		.booking-reference strong {
+			color: #991b1b;
+			font-size: 18px;
+		}
+		.details-section {
+			margin: 25px 0;
+		}
+		.details-section h2 {
+			font-size: 18px;
+			color: #1f2937;
+			margin-bottom: 15px;
+			border-bottom: 2px solid #e5e7eb;
+			padding-bottom: 8px;
+		}
+		.detail-row {
+			display: flex;
+			padding: 12px 0;
+			border-bottom: 1px solid #f3f4f6;
+		}
+		.detail-row:last-child {
+			border-bottom: none;
+		}
+		.detail-label {
+			font-weight: 600;
+			color: #6b7280;
+			min-width: 140px;
+		}
+		.detail-value {
+			color: #1f2937;
+			flex: 1;
+		}
+		.cancelled-meeting {
+			background: #fef2f2;
+			border: 1px solid #fecaca;
+			border-radius: 6px;
+			padding: 15px 20px;
+			margin: 20px 0;
+			text-decoration: line-through;
+			opacity: 0.7;
+		}
+		.cancelled-meeting strong {
+			color: #991b1b;
+			font-size: 16px;
+			display: block;
+			margin-bottom: 5px;
+		}
+		.cancelled-meeting span {
+			color: #7f1d1d;
+			font-size: 14px;
+		}
+		.cancellation-info {
+			background: #fffbeb;
+			border-left: 4px solid #f59e0b;
+			padding: 15px 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+		}
+		.cancellation-info strong {
+			color: #92400e;
+			display: block;
+			margin-bottom: 8px;
+		}
+		.actions-section {
+			margin: 30px 0;
+			text-align: center;
+		}
+		.btn {
+			display: inline-block;
+			padding: 12px 24px;
+			margin: 8px;
+			text-decoration: none;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 14px;
+			transition: all 0.3s;
+		}
+		.btn-primary {
+			background: #3b82f6;
+			color: white;
+		}
+		.btn-primary:hover {
+			background: #2563eb;
+		}
+		.btn-secondary {
+			background: #e5e7eb;
+			color: #374151;
+		}
+		.btn-secondary:hover {
+			background: #d1d5db;
+		}
+		.team-notification {
+			background: #f0f9ff;
+			border-left: 4px solid #3b82f6;
+			padding: 15px 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+		}
+		.team-notification strong {
+			color: #1e40af;
+			display: block;
+			margin-bottom: 8px;
+		}
+		.email-footer {
+			background: #f9fafb;
+			padding: 20px;
+			text-align: center;
+			font-size: 12px;
+			color: #6b7280;
+			border-top: 1px solid #e5e7eb;
+		}
+		.email-footer a {
+			color: #3b82f6;
+			text-decoration: none;
+		}
+		@media only screen and (max-width: 600px) {
+			.email-container {
+				margin: 0;
+				border-radius: 0;
+			}
+			.detail-row {
+				flex-direction: column;
+			}
+			.detail-label {
+				margin-bottom: 5px;
+			}
+			.btn {
+				display: block;
+				margin: 8px 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="email-container">
+		<!-- Header -->
+		<div class="email-header">
+			<div class="icon">
+				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+			</div>
+			<h1>Booking Cancelled</h1>
+		</div>
+
+		<!-- Body -->
+		<div class="email-body">
+			{% if is_team_member %}
+			<!-- Team Member Version -->
+			<p class="intro-text">
+				A meeting assignment has been cancelled.
+			</p>
+
+			<div class="team-notification">
+				<strong>Meeting with {{ booking.customer_name }} has been cancelled</strong>
+				<p style="margin: 5px 0 0 0; font-size: 14px; color: #1e40af;">
+					This meeting has been removed from your schedule. No further action is required.
+				</p>
+			</div>
+
+			{% else %}
+			<!-- Customer Version -->
+			<p class="intro-text">
+				Hi {{ booking.customer_name }},
+			</p>
+			<p class="intro-text">
+				Your meeting booking has been successfully cancelled as requested.
+			</p>
+			{% endif %}
+
+			<!-- Booking Reference -->
+			<div class="booking-reference">
+				<strong>Cancelled Booking: {{ booking.booking_reference }}</strong>
+				<p style="margin: 5px 0 0 0; font-size: 14px; color: #7f1d1d;">
+					This booking is no longer active.
+				</p>
+			</div>
+
+			<!-- Cancelled Meeting Details -->
+			<div class="cancelled-meeting">
+				<strong>{{ formatted_start }}</strong>
+				<span>Duration: {{ meeting_type.duration }} minutes</span>
+			</div>
+
+			<!-- Meeting Details -->
+			<div class="details-section">
+				<h2>Cancelled Meeting Details</h2>
+				<div class="detail-row">
+					<div class="detail-label">Meeting Type:</div>
+					<div class="detail-value">{{ meeting_type.meeting_name }}</div>
+				</div>
+				<div class="detail-row">
+					<div class="detail-label">Department:</div>
+					<div class="detail-value">{{ department.department_name }}</div>
+				</div>
+				{% if not is_team_member %}
+				<div class="detail-row">
+					<div class="detail-label">Location:</div>
+					<div class="detail-value">
+						{% if meeting_type.location_type == "Video Call" %}
+							{{ meeting_type.video_platform }}
+						{% elif meeting_type.location_type == "Phone Call" %}
+							Phone Call
+						{% elif meeting_type.location_type == "In-Person" %}
+							{{ booking.location or "Office location" }}
+						{% else %}
+							{{ meeting_type.location_type }}
+						{% endif %}
+					</div>
+				</div>
+				{% endif %}
+				{% if booking.cancellation_reason %}
+				<div class="detail-row">
+					<div class="detail-label">Reason:</div>
+					<div class="detail-value">{{ booking.cancellation_reason }}</div>
+				</div>
+				{% endif %}
+			</div>
+
+			{% if not is_team_member %}
+			<!-- Customer Information -->
+			<div class="cancellation-info">
+				<strong>Need to Reschedule?</strong>
+				<p style="margin: 5px 0 0 0; font-size: 14px; color: #78350f;">
+					We're sorry we couldn't meet with you at this time. If you'd still like to schedule a meeting with us, you can book a new appointment anytime.
+				</p>
+			</div>
+
+			<!-- Action Buttons -->
+			<div class="actions-section">
+				<a href="{{ rebook_url }}" class="btn btn-primary">Book Another Meeting</a>
+				<a href="{{ site_url }}" class="btn btn-secondary">Visit Our Website</a>
+			</div>
+
+			<p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
+				<strong>Questions?</strong><br>
+				If you have any questions about this cancellation or need assistance, please don't hesitate to contact us.
+			</p>
+			{% else %}
+			<!-- Team Member Action -->
+			<div class="actions-section">
+				<a href="{{ site_url }}/app/mm-meeting-booking/{{ booking.name }}" class="btn btn-primary">View in System</a>
+			</div>
+
+			<p style="font-size: 13px; color: #6b7280; margin-top: 30px; text-align: center;">
+				This time slot is now available in your schedule.
+			</p>
+			{% endif %}
+		</div>
+
+		<!-- Footer -->
+		<div class="email-footer">
+			<p>
+				{% if is_team_member %}
+				This is an automated notification from the Meeting Manager system.<br>
+				<a href="{{ site_url }}/app">Login to your dashboard</a>
+				{% else %}
+				This is an automated cancellation confirmation email.<br>
+				Please do not reply to this email directly.
+				{% endif %}
+			</p>
+			{% if not is_team_member %}
+			<p style="margin-top: 10px;">
+				<a href="{{ site_url }}">Visit our website</a>
+			</p>
+			{% endif %}
+		</div>
+	</div>
+</body>
+</html>

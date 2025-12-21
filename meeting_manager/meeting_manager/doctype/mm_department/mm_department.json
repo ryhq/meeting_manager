@@ -1,0 +1,177 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:department_slug",
+ "creation": "2025-12-05 11:12:25.658868",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "department_name",
+  "department_slug",
+  "column_break_juij",
+  "is_active",
+  "section_break_department_details",
+  "description",
+  "column_break_cuof",
+  "department_leader",
+  "section_break_settings",
+  "timezone",
+  "column_break_yqeu",
+  "assignment_algorithm",
+  "section_break_notifications",
+  "notify_leader_on_booking",
+  "column_break_uykq",
+  "notify_admin_on_booking",
+  "section_break_members",
+  "department_members",
+  "section_break_url",
+  "public_booking_url"
+ ],
+ "fields": [
+  {
+   "bold": 1,
+   "fieldname": "department_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Department Name",
+   "reqd": 1
+  },
+  {
+   "description": "URL-friendly identifier (e.g., \"support\", \"sales\")",
+   "fieldname": "department_slug",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Department Slug",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_juij",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "section_break_department_details",
+   "fieldtype": "Section Break",
+   "label": "Department Details"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_cuof",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Leader/Manager of this department (must be a member)",
+   "fieldname": "department_leader",
+   "fieldtype": "Link",
+   "label": "Department Leader",
+   "options": "User"
+  },
+  {
+   "fieldname": "section_break_settings",
+   "fieldtype": "Section Break",
+   "label": "Settings"
+  },
+  {
+   "default": "Europe/Copenhagen",
+   "fieldname": "timezone",
+   "fieldtype": "Select",
+   "label": "Timezone",
+   "options": "UTC\nAmerica/New_York\nAmerica/Chicago\nAmerica/Denver\nAmerica/Los_Angeles\nEurope/London\nEurope/Paris\nEurope/Berlin\nEurope/Copenhagen\nAsia/Dubai\nAsia/Kolkata\nAsia/Singapore\nAsia/Tokyo\nAustralia/Sydney"
+  },
+  {
+   "fieldname": "column_break_yqeu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Round Robin",
+   "fieldname": "assignment_algorithm",
+   "fieldtype": "Select",
+   "label": "Assignment Algorithm",
+   "options": "Round Robin\nLeast Busy"
+  },
+  {
+   "fieldname": "section_break_notifications",
+   "fieldtype": "Section Break",
+   "label": "Notification Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "notify_leader_on_booking",
+   "fieldtype": "Check",
+   "label": "Notify Leader on Booking"
+  },
+  {
+   "fieldname": "column_break_uykq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "notify_admin_on_booking",
+   "fieldtype": "Check",
+   "label": "Notify Admin on Booking"
+  },
+  {
+   "fieldname": "section_break_members",
+   "fieldtype": "Section Break",
+   "label": "Department Members"
+  },
+  {
+   "fieldname": "department_members",
+   "fieldtype": "Table",
+   "label": "Department Members",
+   "options": "MM Department Member",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_url",
+   "fieldtype": "Section Break",
+   "label": "Public Booking URL"
+  },
+  {
+   "description": "Auto-generated: domain/book/{slug}",
+   "fieldname": "public_booking_url",
+   "fieldtype": "Data",
+   "label": "Public Booking URL",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-08 17:12:17.721152",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Department",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

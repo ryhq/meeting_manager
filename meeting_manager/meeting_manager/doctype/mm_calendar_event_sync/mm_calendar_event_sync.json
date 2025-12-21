@@ -1,0 +1,246 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:MM-CES-{calendar_integration}-{####}",
+ "creation": "2025-12-05 18:15:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "event_information_section",
+  "calendar_integration",
+  "external_event_id",
+  "event_title",
+  "column_break_event",
+  "event_type",
+  "sync_status",
+  "event_timing_section",
+  "start_datetime",
+  "column_break_timing",
+  "end_datetime",
+  "event_details_section",
+  "description",
+  "location",
+  "column_break_details",
+  "attendees_json",
+  "organizer_email",
+  "linked_records_section",
+  "meeting_booking",
+  "column_break_linked",
+  "is_blocking_availability",
+  "sync_metadata_section",
+  "last_synced",
+  "external_last_modified",
+  "column_break_metadata",
+  "sync_direction",
+  "sync_error_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "event_information_section",
+   "fieldtype": "Section Break",
+   "label": "Event Information"
+  },
+  {
+   "description": "Parent calendar integration for this event",
+   "fieldname": "calendar_integration",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Calendar Integration",
+   "options": "MM Calendar Integration",
+   "reqd": 1
+  },
+  {
+   "description": "Unique event ID from external calendar service",
+   "fieldname": "external_event_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "External Event ID",
+   "reqd": 1
+  },
+  {
+   "description": "Event title/summary",
+   "fieldname": "event_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Event Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_event",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "External Event",
+   "description": "Type of event synced",
+   "fieldname": "event_type",
+   "fieldtype": "Select",
+   "label": "Event Type",
+   "options": "External Event\nMeeting Booking\nBlocked Time\nAll-Day Event"
+  },
+  {
+   "default": "Synced",
+   "description": "Current sync status",
+   "fieldname": "sync_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Sync Status",
+   "options": "Synced\nPending Sync\nSync Failed\nDeleted Externally\nDeleted Locally"
+  },
+  {
+   "fieldname": "event_timing_section",
+   "fieldtype": "Section Break",
+   "label": "Event Timing"
+  },
+  {
+   "description": "Event start date and time",
+   "fieldname": "start_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Start DateTime",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_timing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Event end date and time",
+   "fieldname": "end_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "End DateTime",
+   "reqd": 1
+  },
+  {
+   "fieldname": "event_details_section",
+   "fieldtype": "Section Break",
+   "label": "Event Details"
+  },
+  {
+   "description": "Event description/notes",
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "description": "Event location",
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "column_break_details",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "JSON array of attendee email addresses",
+   "fieldname": "attendees_json",
+   "fieldtype": "JSON",
+   "label": "Attendees"
+  },
+  {
+   "description": "Email of event organizer",
+   "fieldname": "organizer_email",
+   "fieldtype": "Data",
+   "label": "Organizer Email"
+  },
+  {
+   "fieldname": "linked_records_section",
+   "fieldtype": "Section Break",
+   "label": "Linked Records"
+  },
+  {
+   "description": "Linked MM Meeting Booking (if this is a booked meeting)",
+   "fieldname": "meeting_booking",
+   "fieldtype": "Link",
+   "label": "Meeting Booking",
+   "options": "MM Meeting Booking"
+  },
+  {
+   "fieldname": "column_break_linked",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Whether this event blocks user availability for new bookings",
+   "fieldname": "is_blocking_availability",
+   "fieldtype": "Check",
+   "label": "Is Blocking Availability"
+  },
+  {
+   "fieldname": "sync_metadata_section",
+   "fieldtype": "Section Break",
+   "label": "Sync Metadata"
+  },
+  {
+   "description": "Last time this event was synced",
+   "fieldname": "last_synced",
+   "fieldtype": "Datetime",
+   "label": "Last Synced",
+   "read_only": 1
+  },
+  {
+   "description": "Last modified timestamp from external calendar",
+   "fieldname": "external_last_modified",
+   "fieldtype": "Datetime",
+   "label": "External Last Modified"
+  },
+  {
+   "fieldname": "column_break_metadata",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Inbound",
+   "description": "Direction of last sync",
+   "fieldname": "sync_direction",
+   "fieldtype": "Select",
+   "label": "Sync Direction",
+   "options": "Inbound\nOutbound\nBidirectional"
+  },
+  {
+   "description": "Error details from sync failures",
+   "fieldname": "sync_error_log",
+   "fieldtype": "Text",
+   "label": "Sync Error Log",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-05 18:15:00.000000",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Calendar Event Sync",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "start_datetime",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

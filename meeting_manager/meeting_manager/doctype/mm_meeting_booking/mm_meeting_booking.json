@@ -1,0 +1,499 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:MM-MB-{meeting_type}-{####}",
+ "creation": "2025-12-08 10:16:27.681513",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "booking_information_section",
+  "meeting_type",
+  "booking_status",
+  "booking_date",
+  "column_break_xtyf",
+  "booking_reference",
+  "is_internal",
+  "booking_source",
+  "section_break_yekk",
+  "select_mkru",
+  "column_break_amjb",
+  "status_color",
+  "meeting_details_section",
+  "meeting_title",
+  "meeting_description",
+  "column_break_lvtu",
+  "meeting_location",
+  "video_meeting_url",
+  "location_type",
+  "timing_section",
+  "start_datetime",
+  "end_datetime",
+  "duration",
+  "assigned_users_section",
+  "assigned_users",
+  "assignment_history",
+  "customer_details_section",
+  "customer_name",
+  "customer_email",
+  "customer_phone",
+  "customer_notes",
+  "participants_section",
+  "participants",
+  "approval_section",
+  "requires_approval",
+  "approval_status",
+  "column_break_qlwm",
+  "approved_by",
+  "approval_date",
+  "rejection_reason",
+  "customer_self_service_section",
+  "cancel_token",
+  "reschedule_token",
+  "column_break_tokens",
+  "cancel_link",
+  "reschedule_link",
+  "calendar_sync_section",
+  "calendar_event_synced",
+  "calendar_event",
+  "column_break_rgvb",
+  "external_calendar_link",
+  "reminders_section",
+  "reminders_sent",
+  "last_reminder_sent",
+  "booking_history_section",
+  "booking_history",
+  "metadata_section",
+  "created_by",
+  "column_break_ipce",
+  "cancelled_at",
+  "cancellation_reason"
+ ],
+ "fields": [
+  {
+   "fieldname": "booking_information_section",
+   "fieldtype": "Section Break",
+   "label": "Booking Information"
+  },
+  {
+   "description": "Type of meeting being booked",
+   "fieldname": "meeting_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Meeting Type",
+   "options": "MM Meeting Type",
+   "reqd": 1
+  },
+  {
+   "default": "Pending",
+   "description": "Current status of the booking",
+   "fieldname": "booking_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Booking Status",
+   "options": "Pending\nConfirmed\nCancelled\nCompleted\nNo-Show\nRescheduled",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "description": "Date when booking was created",
+   "fieldname": "booking_date",
+   "fieldtype": "Date",
+   "label": "Booking Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_xtyf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Unique reference for customer communication",
+   "fieldname": "booking_reference",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Booking Reference",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "Is this an internal meeting between employees",
+   "fieldname": "is_internal",
+   "fieldtype": "Check",
+   "label": "Is Internal"
+  },
+  {
+   "default": "Public Booking Page",
+   "description": "How was this booking created",
+   "fieldname": "booking_source",
+   "fieldtype": "Select",
+   "label": "Booking Source",
+   "options": "Public Booking Page\nInternal System\nManual Entry\nAPI Integration\nGoogle Calendar\nOutlook Calendar"
+  },
+  {
+   "fieldname": "timing_section",
+   "fieldtype": "Section Break",
+   "label": "Timing"
+  },
+  {
+   "description": "Meeting start date and time",
+   "fieldname": "start_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Start DateTime",
+   "reqd": 1
+  },
+  {
+   "description": "Meeting end date and time",
+   "fieldname": "end_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "End DateTime",
+   "reqd": 1
+  },
+  {
+   "description": "Duration in minutes (auto-calculated)",
+   "fieldname": "duration",
+   "fieldtype": "Int",
+   "label": "Duration",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "assigned_users_section",
+   "fieldtype": "Section Break",
+   "label": "Assigned Users"
+  },
+  {
+   "description": "Currently assigned team members",
+   "fieldname": "assigned_users",
+   "fieldtype": "Table",
+   "label": "Assigned Users",
+   "options": "MM Meeting Booking Assigned User"
+  },
+  {
+   "description": "Historical record of assignment changes",
+   "fieldname": "assignment_history",
+   "fieldtype": "Table",
+   "label": "Assignment History",
+   "options": "MM Meeting Booking History"
+  },
+  {
+   "fieldname": "customer_details_section",
+   "fieldtype": "Section Break",
+   "label": "Customer Details"
+  },
+  {
+   "description": "Customer full name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name"
+  },
+  {
+   "description": "Customer email address",
+   "fieldname": "customer_email",
+   "fieldtype": "Data",
+   "label": "Customer Email"
+  },
+  {
+   "description": "Customer phone number",
+   "fieldname": "customer_phone",
+   "fieldtype": "Data",
+   "label": "Customer Phone"
+  },
+  {
+   "description": "Customer's notes or special requests",
+   "fieldname": "customer_notes",
+   "fieldtype": "Text",
+   "label": "Customer Notes"
+  },
+  {
+   "fieldname": "participants_section",
+   "fieldtype": "Section Break",
+   "label": "Participants"
+  },
+  {
+   "description": "All meeting participants (internal and external)",
+   "fieldname": "participants",
+   "fieldtype": "Table",
+   "label": "Participants",
+   "options": "MM Meeting Booking Participant"
+  },
+  {
+   "fieldname": "meeting_details_section",
+   "fieldtype": "Section Break",
+   "label": "Meeting Details"
+  },
+  {
+   "description": "Meeting title/subject",
+   "fieldname": "meeting_title",
+   "fieldtype": "Data",
+   "label": "Meeting Title",
+   "reqd": 1
+  },
+  {
+   "description": "Meeting agenda or description",
+   "fieldname": "meeting_description",
+   "fieldtype": "Text Editor",
+   "label": "Meeting Description"
+  },
+  {
+   "fieldname": "column_break_lvtu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Physical address or instructions",
+   "fieldname": "meeting_location",
+   "fieldtype": "Data",
+   "label": "Meeting Location"
+  },
+  {
+   "description": "Video conference URL (Zoom, Meet, Teams, etc.)",
+   "fieldname": "video_meeting_url",
+   "fieldtype": "Data",
+   "label": "Video Meeting URL"
+  },
+  {
+   "description": "Type of meeting location",
+   "fieldname": "location_type",
+   "fieldtype": "Select",
+   "label": "Location Type",
+   "options": "Video Call\nPhone Call\nPhysical Location\nCustom"
+  },
+  {
+   "fieldname": "approval_section",
+   "fieldtype": "Section Break",
+   "label": "Approval"
+  },
+  {
+   "default": "0",
+   "description": "Does this booking require manual approval",
+   "fieldname": "requires_approval",
+   "fieldtype": "Check",
+   "label": "Requires Approval"
+  },
+  {
+   "default": "Pending",
+   "depends_on": "doc.requires_approval==1;",
+   "fieldname": "approval_status",
+   "fieldtype": "Select",
+   "label": "Approval Status",
+   "options": "Pending\nApproved\nRejected"
+  },
+  {
+   "fieldname": "column_break_qlwm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "doc.requires_approval==1;",
+   "description": "User who approved/rejected this booking",
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "depends_on": "doc.requires_approval==1;",
+   "description": "When approval decision was made",
+   "fieldname": "approval_date",
+   "fieldtype": "Datetime",
+   "label": "Approval Date"
+  },
+  {
+   "depends_on": "doc.approval_status=='Rejected';",
+   "description": "Reason for rejection",
+   "fieldname": "rejection_reason",
+   "fieldtype": "Text",
+   "label": "Rejection Reason"
+  },
+  {
+   "fieldname": "customer_self_service_section",
+   "fieldtype": "Section Break",
+   "label": "Customer Self-Service"
+  },
+  {
+   "description": "Security token for customer to cancel booking",
+   "fieldname": "cancel_token",
+   "fieldtype": "Data",
+   "label": "Cancel Token",
+   "read_only": 1
+  },
+  {
+   "description": "Security token for customer to reschedule booking",
+   "fieldname": "reschedule_token",
+   "fieldtype": "Data",
+   "label": "Reschedule Token",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tokens",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Full URL for customer to cancel booking",
+   "fieldname": "cancel_link",
+   "fieldtype": "Data",
+   "label": "Cancel Link",
+   "read_only": 1
+  },
+  {
+   "description": "Full URL for customer to reschedule booking",
+   "fieldname": "reschedule_link",
+   "fieldtype": "Data",
+   "label": "Reschedule Link",
+   "read_only": 1
+  },
+  {
+   "fieldname": "calendar_sync_section",
+   "fieldtype": "Section Break",
+   "label": "Calendar Sync"
+  },
+  {
+   "default": "0",
+   "description": "Has this been synced to calendar",
+   "fieldname": "calendar_event_synced",
+   "fieldtype": "Check",
+   "label": "Calendar Event Synced"
+  },
+  {
+   "description": "Link to synced calendar event",
+   "fieldname": "calendar_event",
+   "fieldtype": "Link",
+   "label": "Calendar Event",
+   "options": "MM Calendar Event Sync"
+  },
+  {
+   "fieldname": "column_break_rgvb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "External calendar event URL",
+   "fieldname": "external_calendar_link",
+   "fieldtype": "Data",
+   "label": "External Calendar Link",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reminders_section",
+   "fieldtype": "Section Break",
+   "label": "Reminders"
+  },
+  {
+   "description": "JSON array of reminder timestamps sent",
+   "fieldname": "reminders_sent",
+   "fieldtype": "JSON",
+   "label": "Reminders Sent",
+   "read_only": 1
+  },
+  {
+   "description": "Last reminder sent timestamp",
+   "fieldname": "last_reminder_sent",
+   "fieldtype": "Datetime",
+   "label": "Last Reminder Sent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "booking_history_section",
+   "fieldtype": "Section Break",
+   "label": "Booking History"
+  },
+  {
+   "description": "Log of all booking changes and events",
+   "fieldname": "booking_history",
+   "fieldtype": "Table",
+   "label": "Booking History",
+   "options": "MM Meeting Booking History"
+  },
+  {
+   "fieldname": "metadata_section",
+   "fieldtype": "Section Break",
+   "label": "Metadata"
+  },
+  {
+   "description": "User who created this booking",
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ipce",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "doc.booking_status=='Cancelled';",
+   "description": "When booking was cancelled",
+   "fieldname": "cancelled_at",
+   "fieldtype": "Datetime",
+   "label": "Cancelled At",
+   "read_only": 1
+  },
+  {
+   "depends_on": "doc.booking_status=='Cancelled';",
+   "description": "Reason for cancellation",
+   "fieldname": "cancellation_reason",
+   "fieldtype": "Text",
+   "label": "Cancellation Reason"
+  },
+  {
+   "fieldname": "section_break_yekk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "select_mkru",
+   "fieldtype": "Select",
+   "label": "Service",
+   "options": "Business\nBusiness Extended\nBusiness Rebook\nNew Setup Business\nPrivate / Business Customer\nPrivate New Sale\nPrivate Self Book"
+  },
+  {
+   "fieldname": "status_color",
+   "fieldtype": "Select",
+   "label": "Status Color",
+   "options": "Red\nBlue\nGreen\nOrange\nYellow\nIndigo\nPurple\nPink"
+  },
+  {
+   "fieldname": "column_break_amjb",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-17 16:01:08.474942",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Meeting Booking",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "MM Department Leader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "start_datetime",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

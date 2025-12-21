@@ -1,0 +1,557 @@
+
+
+<div class="booking-container">
+	<!-- Progress Steps -->
+	<div class="booking-progress">
+		<div class="progress-steps">
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Department</div>
+			</div>
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Meeting Type</div>
+			</div>
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Date</div>
+			</div>
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Time</div>
+			</div>
+			<div class="progress-step active">
+				<div class="step-number">5</div>
+				<div class="step-label">Details</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">6</div>
+				<div class="step-label">Confirm</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Breadcrumb -->
+	<div class="breadcrumb-nav">
+		<a href="/meeting-booking/{{ department.department_slug }}/{{ meeting_type.meeting_slug }}/{{ selected_date }}" class="breadcrumb-link">
+			← Back to Time Slots
+		</a>
+	</div>
+
+	<!-- Page Header -->
+	<div class="booking-header">
+		<h1>Enter Your Details</h1>
+		<p class="text-muted">Almost done! Just need a few details to confirm your booking</p>
+	</div>
+
+	<!-- Form Container -->
+	<div class="form-container">
+		<!-- Booking Summary -->
+		<div class="booking-summary">
+			<h3>Booking Summary</h3>
+			<div class="summary-item">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+					<line x1="16" y1="2" x2="16" y2="6"></line>
+					<line x1="8" y1="2" x2="8" y2="6"></line>
+					<line x1="3" y1="10" x2="21" y2="10"></line>
+				</svg>
+				<div>
+					<strong>{{ selected_date_display }}</strong>
+					<span class="text-muted">at {{ selected_time_display }}</span>
+				</div>
+			</div>
+			<div class="summary-item">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="12" cy="12" r="10"></circle>
+					<polyline points="12 6 12 12 16 14"></polyline>
+				</svg>
+				<div>
+					<strong>{{ meeting_type.meeting_name }}</strong>
+					<span class="text-muted">{{ meeting_type.duration }} minutes</span>
+				</div>
+			</div>
+			<div class="summary-item">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+					<circle cx="9" cy="7" r="4"></circle>
+					<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+					<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+				</svg>
+				<div>
+					<strong>{{ department.department_name }}</strong>
+				</div>
+			</div>
+		</div>
+
+		<!-- Customer Form -->
+		<form id="booking-form" class="customer-form">
+			<div class="form-group">
+				<label for="customer_name">Full Name <span class="required">*</span></label>
+				<input
+					type="text"
+					id="customer_name"
+					name="customer_name"
+					class="form-control"
+					placeholder="John Doe"
+					required
+				>
+			</div>
+
+			<div class="form-group">
+				<label for="customer_email">Email Address <span class="required">*</span></label>
+				<input
+					type="email"
+					id="customer_email"
+					name="customer_email"
+					class="form-control"
+					placeholder="john@example.com"
+					required
+				>
+			</div>
+
+			<div class="form-group">
+				<label for="customer_phone">Phone Number <span class="required">*</span></label>
+				<input
+					type="tel"
+					id="customer_phone"
+					name="customer_phone"
+					class="form-control"
+					placeholder="+1 (555) 123-4567"
+					required
+				>
+			</div>
+
+			<div class="form-group">
+				<label for="customer_notes">Additional Notes (Optional)</label>
+				<textarea
+					id="customer_notes"
+					name="customer_notes"
+					class="form-control"
+					rows="4"
+					placeholder="Any special requirements or topics you'd like to discuss?"
+				></textarea>
+			</div>
+
+			<!-- Error Message -->
+			<div class="alert alert-danger" id="error-message" style="display: none;">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="12" y1="8" x2="12" y2="12"></line>
+					<line x1="12" y1="16" x2="12.01" y2="16"></line>
+				</svg>
+				<span id="error-text"></span>
+			</div>
+
+			<!-- Submit Button -->
+			<button type="submit" class="btn-submit" id="submit-btn">
+				<span class="btn-text">Confirm Booking</span>
+				<span class="btn-spinner" style="display: none;">
+					<div class="spinner-small"></div>
+					Processing...
+				</span>
+			</button>
+
+			<p class="form-note">
+				By confirming, you agree to receive booking confirmation and reminders via email.
+			</p>
+		</form>
+	</div>
+
+	<!-- Hidden data for JavaScript -->
+	<div style="display: none;">
+		<input type="hidden" id="department-slug" value="{{ department.department_slug }}">
+		<input type="hidden" id="meeting-type-slug" value="{{ meeting_type.meeting_slug }}">
+		<input type="hidden" id="selected-date" value="{{ selected_date }}">
+		<input type="hidden" id="selected-time" value="{{ selected_time }}">
+	</div>
+</div>
+
+
+
+<style>
+	.booking-container {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	/* Progress Steps */
+	.booking-progress {
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.progress-steps {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.progress-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+	}
+
+	.step-number {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: #e5e7eb;
+		color: #6b7280;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+
+	.progress-step.active .step-number {
+		background: #3b82f6;
+		color: white;
+	}
+
+	.progress-step.completed .step-number {
+		background: #10b981;
+		color: white;
+	}
+
+	.step-label {
+		font-size: 0.75rem;
+		color: #6b7280;
+	}
+
+	.progress-step.active .step-label,
+	.progress-step.completed .step-label {
+		color: #1f2937;
+		font-weight: 600;
+	}
+
+	/* Breadcrumb */
+	.breadcrumb-nav {
+		margin-bottom: 1.5rem;
+	}
+
+	.breadcrumb-link {
+		color: #6b7280;
+		text-decoration: none;
+		font-size: 0.9rem;
+		transition: color 0.2s;
+	}
+
+	.breadcrumb-link:hover {
+		color: #3b82f6;
+	}
+
+	/* Header */
+	.booking-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.booking-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.booking-header .text-muted {
+		color: #6b7280;
+		font-size: 1rem;
+	}
+
+	/* Form Container */
+	.form-container {
+		display: grid;
+		grid-template-columns: 350px 1fr;
+		gap: 2rem;
+	}
+
+	/* Booking Summary */
+	.booking-summary {
+		background: #f9fafb;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		padding: 1.5rem;
+		height: fit-content;
+	}
+
+	.booking-summary h3 {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: #1f2937;
+		margin-bottom: 1.25rem;
+	}
+
+	.summary-item {
+		display: flex;
+		gap: 1rem;
+		padding: 1rem 0;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.summary-item:last-child {
+		border-bottom: none;
+	}
+
+	.summary-item svg {
+		flex-shrink: 0;
+		color: #6b7280;
+	}
+
+	.summary-item strong {
+		display: block;
+		color: #1f2937;
+		margin-bottom: 0.25rem;
+	}
+
+	.summary-item .text-muted {
+		color: #6b7280;
+		font-size: 0.875rem;
+	}
+
+	/* Customer Form */
+	.customer-form {
+		background: white;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		padding: 2rem;
+	}
+
+	.form-group {
+		margin-bottom: 1.5rem;
+	}
+
+	.form-group label {
+		display: block;
+		font-weight: 500;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.required {
+		color: #ef4444;
+	}
+
+	.form-control {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		border: 2px solid #e5e7eb;
+		border-radius: 8px;
+		font-size: 1rem;
+		transition: all 0.2s;
+		font-family: inherit;
+	}
+
+	.form-control:focus {
+		outline: none;
+		border-color: #3b82f6;
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	}
+
+	textarea.form-control {
+		resize: vertical;
+		min-height: 100px;
+	}
+
+	/* Alert */
+	.alert {
+		padding: 1rem;
+		border-radius: 8px;
+		margin-bottom: 1.5rem;
+		display: flex;
+		align-items: start;
+		gap: 0.75rem;
+	}
+
+	.alert-danger {
+		background: #fef2f2;
+		color: #991b1b;
+		border: 1px solid #fecaca;
+	}
+
+	.alert svg {
+		flex-shrink: 0;
+		margin-top: 0.125rem;
+	}
+
+	/* Submit Button */
+	.btn-submit {
+		width: 100%;
+		padding: 1rem 2rem;
+		background: #3b82f6;
+		color: white;
+		border: none;
+		border-radius: 8px;
+		font-size: 1.125rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		position: relative;
+	}
+
+	.btn-submit:hover:not(:disabled) {
+		background: #2563eb;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+	}
+
+	.btn-submit:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
+
+	.btn-spinner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+	}
+
+	.spinner-small {
+		width: 20px;
+		height: 20px;
+		border: 3px solid rgba(255, 255, 255, 0.3);
+		border-top-color: white;
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	.form-note {
+		text-align: center;
+		color: #6b7280;
+		font-size: 0.875rem;
+		margin-top: 1rem;
+		margin-bottom: 0;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.form-container {
+			grid-template-columns: 1fr;
+		}
+
+		.booking-summary {
+			order: 2;
+		}
+
+		.customer-form {
+			order: 1;
+			padding: 1.5rem;
+		}
+
+		.step-label {
+			font-size: 0.65rem;
+		}
+
+		.step-number {
+			width: 32px;
+			height: 32px;
+			font-size: 0.875rem;
+		}
+
+		.booking-header h1 {
+			font-size: 1.5rem;
+		}
+	}
+</style>
+
+
+<script>
+	// Get hidden values
+	const departmentSlug = document.getElementById('department-slug').value;
+	const meetingTypeSlug = document.getElementById('meeting-type-slug').value;
+	const selectedDate = document.getElementById('selected-date').value;
+	const selectedTime = document.getElementById('selected-time').value;
+
+	// Elements
+	const bookingForm = document.getElementById('booking-form');
+	const submitBtn = document.getElementById('submit-btn');
+	const btnText = submitBtn.querySelector('.btn-text');
+	const btnSpinner = submitBtn.querySelector('.btn-spinner');
+	const errorMessage = document.getElementById('error-message');
+	const errorText = document.getElementById('error-text');
+
+	// Detect visitor timezone
+	let visitorTimezone = 'UTC';
+	try {
+		visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	} catch (e) {
+		console.error('Could not detect timezone:', e);
+	}
+
+	// Handle form submission
+	bookingForm.addEventListener('submit', function(e) {
+		e.preventDefault();
+
+		// Validate form
+		if (!bookingForm.checkValidity()) {
+			bookingForm.reportValidity();
+			return;
+		}
+
+		// Get form data
+		const formData = {
+			department_slug: departmentSlug,
+			meeting_type_slug: meetingTypeSlug,
+			scheduled_date: selectedDate,
+			scheduled_start_time: selectedTime,
+			customer_name: document.getElementById('customer_name').value.trim(),
+			customer_email: document.getElementById('customer_email').value.trim(),
+			customer_phone: document.getElementById('customer_phone').value.trim(),
+			customer_notes: document.getElementById('customer_notes').value.trim(),
+			visitor_timezone: visitorTimezone
+		};
+
+		// Show loading state
+		submitBtn.disabled = true;
+		btnText.style.display = 'none';
+		btnSpinner.style.display = 'flex';
+		errorMessage.style.display = 'none';
+
+		// Submit booking
+		frappe.call({
+			method: 'meeting_manager.meeting_manager.api.public.create_customer_booking',
+			type: 'POST',
+			args: {
+				booking_data: formData
+			},
+			callback: function(r) {
+				if (r.message && r.message.success) {
+					// Success! Redirect to confirmation page
+					window.location.href = `/booking-confirmation?booking_id=${r.message.booking_id}`;
+				} else {
+					// Show error
+					showError(r.message?.message || 'Failed to create booking. Please try again.');
+					submitBtn.disabled = false;
+					btnText.style.display = 'inline';
+					btnSpinner.style.display = 'none';
+				}
+			},
+			error: function(err) {
+				console.error('Booking error:', err);
+				showError(err.message || 'An error occurred. Please try again.');
+				submitBtn.disabled = false;
+				btnText.style.display = 'inline';
+				btnSpinner.style.display = 'none';
+			}
+		});
+	});
+
+	// Show error message
+	function showError(message) {
+		errorText.textContent = message;
+		errorMessage.style.display = 'flex';
+		errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+	}
+</script>
+

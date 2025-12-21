@@ -1,0 +1,142 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block head_include %}
+<script>
+// Ensure frappe object exists for API calls - loaded early before page content
+(function() {
+    if (typeof window.frappe === 'undefined') {
+        window.frappe = {};
+    }
+
+    // Always define frappe.call even if frappe exists
+    window.frappe.call = function(opts) {
+        // Get CSRF token - check multiple places
+        const getCsrfToken = () => {
+            // Try meta tag first
+            const meta = document.querySelector('meta[name="csrf-token"]');
+            if (meta && meta.content) return meta.content;
+
+            // Try frappe.csrf_token if it exists
+            if (window.frappe && window.frappe.csrf_token) return window.frappe.csrf_token;
+
+            // Try to get from cookie
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrf_token') return decodeURIComponent(value);
+            }
+
+            return '';
+        };
+
+        // Construct proper Frappe API URL with query params for GET
+        let url = `/api/method/${opts.method}`;
+        const method = opts.type || 'GET';  // Default to GET for guest endpoints
+
+        const headers = {
+            'Accept': 'application/json'
+        };
+
+        let fetchOpts = {
+            method: method,
+            headers: headers,
+            credentials: 'same-origin'
+        };
+
+        if (method === 'GET' && opts.args) {
+            // For GET, append args as query parameters
+            const params = new URLSearchParams(opts.args);
+            url += '?' + params.toString();
+        } else if (method === 'POST') {
+            // For POST, send as JSON body
+            headers['Content-Type'] = 'application/json';
+            const csrfToken = getCsrfToken();
+            if (csrfToken) {
+                headers['X-Frappe-CSRF-Token'] = csrfToken;
+            }
+            fetchOpts.body = JSON.stringify(opts.args || {});
+        }
+
+        return fetch(url, fetchOpts)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (opts.callback) {
+                opts.callback(data);
+            }
+            return data;
+        })
+        .catch(error => {
+            console.error('frappe.call error:', error);
+            if (opts.error) {
+                opts.error(error);
+            }
+            throw error;
+        });
+    };
+
+    console.log('frappe.call polyfill loaded');
+})();
+</script>
+{% endblock %}
+
+{% block page_content %}
+<script>
+// Double-check frappe.call exists before rendering page content
+if (typeof frappe === 'undefined' || typeof frappe.call === 'undefined') {
+    console.error('frappe.call not loaded! Reinitializing...');
+    window.frappe = window.frappe || {};
+    window.frappe.call = function(opts) {
+        const getCsrfToken = () => {
+            const meta = document.querySelector('meta[name="csrf-token"]');
+            if (meta && meta.content) return meta.content;
+            if (window.frappe && window.frappe.csrf_token) return window.frappe.csrf_token;
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrf_token') return decodeURIComponent(value);
+            }
+            return '';
+        };
+        let url = `/api/method/${opts.method}`;
+        const method = opts.type || 'GET';
+        const headers = {'Accept': 'application/json'};
+        let fetchOpts = {method: method, headers: headers, credentials: 'same-origin'};
+        if (method === 'GET' && opts.args) {
+            url += '?' + new URLSearchParams(opts.args).toString();
+        } else if (method === 'POST') {
+            headers['Content-Type'] = 'application/json';
+            const csrfToken = getCsrfToken();
+            if (csrfToken) headers['X-Frappe-CSRF-Token'] = csrfToken;
+            fetchOpts.body = JSON.stringify(opts.args || {});
+        }
+        return fetch(url, fetchOpts)
+        .then(r => r.json())
+        .then(data => { if (opts.callback) opts.callback(data); return data; })
+        .catch(err => { if (opts.error) opts.error(err); console.error(err); });
+    };
+}
+</script>
+{% if current_step == 1 %}
+	{# Step 1: Department List #}
+	{% include "templates/meeting-booking/step1_departments.html" %}
+{% elif current_step == 2 %}
+	{# Step 2: Meeting Types #}
+	{% include "templates/meeting-booking/step2_meeting_types.html" %}
+{% elif current_step == 3 %}
+	{# Step 3: Date Picker #}
+	{% include "templates/meeting-booking/step3_date_picker.html" %}
+{% elif current_step == 4 %}
+	{# Step 4: Time Slots #}
+	{% include "templates/meeting-booking/step4_time_slots.html" %}
+{% elif current_step == 5 %}
+	{# Step 5: Customer Form #}
+	{% include "templates/meeting-booking/step5_customer_form.html" %}
+{% endif %}
+{% endblock %}

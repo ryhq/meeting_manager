@@ -1,0 +1,78 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-08 09:41:41.563854",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "action_type",
+  "user",
+  "column_break_dlgv",
+  "action_datetime",
+  "action_by",
+  "notes"
+ ],
+ "fields": [
+  {
+   "description": "Type of assignment action",
+   "fieldname": "action_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Action Type",
+   "options": "Assigned\nUnassigned\nReassigned\nPrimary Changed",
+   "reqd": 1
+  },
+  {
+   "description": "user affected by this action",
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_dlgv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Now",
+   "description": "When the action occured",
+   "fieldname": "action_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Action DateTime",
+   "read_only": 1
+  },
+  {
+   "description": "Who performed this action",
+   "fieldname": "action_by",
+   "fieldtype": "Link",
+   "label": "Action By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "description": "Additional notes about this action",
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-08 09:49:19.033013",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Meeting Booking Assignment History",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "action_datetime",
+ "sort_order": "DESC",
+ "states": []
+}

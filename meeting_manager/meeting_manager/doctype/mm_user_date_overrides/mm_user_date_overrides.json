@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-05 14:35:36.015954",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "reason",
+  "column_break_oobl",
+  "available",
+  "custom_hours_start",
+  "custom_hours_end"
+ ],
+ "fields": [
+  {
+   "description": "Specific date for override",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "description": "Is user available on this date",
+   "fieldname": "available",
+   "fieldtype": "Check",
+   "label": "Available"
+  },
+  {
+   "description": "Custom start time for this date",
+   "fieldname": "custom_hours_start",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Custom Start Hours"
+  },
+  {
+   "description": "Custom end time for this date",
+   "fieldname": "custom_hours_end",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Custom End Hours"
+  },
+  {
+   "description": "e.g., \"Vacation\", \"Conference\", \"Out of Office\"",
+   "fieldname": "reason",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Reason",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_oobl",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-05 16:17:08.803930",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM User Date Overrides",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

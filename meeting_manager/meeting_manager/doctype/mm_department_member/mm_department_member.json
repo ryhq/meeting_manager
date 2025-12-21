@@ -1,0 +1,89 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-05 11:25:13.879854",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "member",
+  "column_break_ddpt",
+  "is_active",
+  "assignment_tracking_section",
+  "assignment_priority",
+  "total_assignments",
+  "section_break_mrsq",
+  "last_assigned_datetime"
+ ],
+ "fields": [
+  {
+   "description": "Team member user account",
+   "fieldname": "member",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Member",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "description": "Enable/disable this member for assignments",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "column_break_ddpt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "assignment_tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Assignment Tracking"
+  },
+  {
+   "default": "1",
+   "description": "For future weighted assignment (optional). Priority for weighted assignment (1-10, higher = more assignments)",
+   "fieldname": "assignment_priority",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Assignment Priority"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_assignments",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Assignments",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_mrsq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "Track for round-robin (auto-updated)",
+   "fieldname": "last_assigned_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Last Assigned Datetime",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-08 17:17:40.506966",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Department Member",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

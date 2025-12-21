@@ -1,0 +1,321 @@
+<div class="booking-container">
+	<!-- Progress Steps -->
+	<div class="booking-progress">
+		<div class="progress-steps">
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Department</div>
+			</div>
+			<div class="progress-step active">
+				<div class="step-number">2</div>
+				<div class="step-label">Meeting Type</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">3</div>
+				<div class="step-label">Date</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">4</div>
+				<div class="step-label">Time</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">5</div>
+				<div class="step-label">Details</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">6</div>
+				<div class="step-label">Confirm</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Breadcrumb -->
+	<div class="breadcrumb-nav">
+		<a href="/meeting-booking" class="breadcrumb-link">← Back to Departments</a>
+	</div>
+
+	<!-- Page Header -->
+	<div class="booking-header">
+		<h1>Select a Meeting Type</h1>
+		<p class="text-muted">Booking with <strong>{{ department.department_name }}</strong></p>
+	</div>
+
+	<!-- Meeting Type Cards -->
+	<div class="meeting-types-grid">
+		{% if meeting_types %}
+			{% for mt in meeting_types %}
+			<a href="/meeting-booking/{{ department.department_slug }}/{{ mt.meeting_slug }}" class="meeting-type-card">
+				<div class="meeting-type-header">
+					<h3>{{ mt.meeting_name }}</h3>
+					<div class="duration-badge">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<circle cx="12" cy="12" r="10"></circle>
+							<polyline points="12 6 12 12 16 14"></polyline>
+						</svg>
+						{{ mt.duration }} min
+					</div>
+				</div>
+
+				{% if mt.description %}
+				<p class="meeting-type-description">{{ mt.description | striptags | truncate(150) }}</p>
+				{% endif %}
+
+				<div class="meeting-type-meta">
+					<span class="location-type">
+						{% if mt.location_type == 'Video Call' %}
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polygon points="23 7 16 12 23 17 23 7"></polygon>
+								<rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+							</svg>
+							Video Call
+						{% elif mt.location_type == 'Phone Call' %}
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+							</svg>
+							Phone Call
+						{% elif mt.location_type == 'Physical Location' %}
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+								<circle cx="12" cy="10" r="3"></circle>
+							</svg>
+							In Person
+						{% else %}
+							{{ mt.location_type }}
+						{% endif %}
+					</span>
+				</div>
+
+				<div class="card-arrow">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="9 18 15 12 9 6"></polyline>
+					</svg>
+				</div>
+			</a>
+			{% endfor %}
+		{% else %}
+			<div class="empty-state">
+				<p>No meeting types available for this department.</p>
+				<p class="text-muted">Please try another department or contact us directly.</p>
+			</div>
+		{% endif %}
+	</div>
+</div>
+
+
+
+<style>
+	.booking-container {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	/* Progress Steps */
+	.booking-progress {
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.progress-steps {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.progress-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+	}
+
+	.step-number {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: #e5e7eb;
+		color: #6b7280;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+		transition: all 0.3s;
+	}
+
+	.progress-step.active .step-number {
+		background: #3b82f6;
+		color: white;
+	}
+
+	.progress-step.completed .step-number {
+		background: #10b981;
+		color: white;
+	}
+
+	.step-label {
+		font-size: 0.75rem;
+		color: #6b7280;
+	}
+
+	.progress-step.active .step-label,
+	.progress-step.completed .step-label {
+		color: #1f2937;
+		font-weight: 600;
+	}
+
+	/* Breadcrumb */
+	.breadcrumb-nav {
+		margin-bottom: 1.5rem;
+	}
+
+	.breadcrumb-link {
+		color: #6b7280;
+		text-decoration: none;
+		font-size: 0.9rem;
+		transition: color 0.2s;
+	}
+
+	.breadcrumb-link:hover {
+		color: #3b82f6;
+	}
+
+	/* Header */
+	.booking-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.booking-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.booking-header .text-muted {
+		color: #6b7280;
+		font-size: 1rem;
+	}
+
+	/* Meeting Types Grid */
+	.meeting-types-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.meeting-type-card {
+		display: block;
+		padding: 1.75rem;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		background: white;
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.3s;
+		position: relative;
+	}
+
+	.meeting-type-card:hover {
+		border-color: #3b82f6;
+		box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.meeting-type-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: start;
+		margin-bottom: 1rem;
+	}
+
+	.meeting-type-header h3 {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: #1f2937;
+		margin: 0;
+		flex: 1;
+	}
+
+	.duration-badge {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		background: #f3f4f6;
+		color: #6b7280;
+		padding: 0.4rem 0.75rem;
+		border-radius: 6px;
+		font-size: 0.85rem;
+		font-weight: 500;
+		white-space: nowrap;
+		margin-left: 1rem;
+	}
+
+	.meeting-type-description {
+		color: #6b7280;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		margin-bottom: 1rem;
+	}
+
+	.meeting-type-meta {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid #e5e7eb;
+	}
+
+	.location-type {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: #6b7280;
+		font-size: 0.85rem;
+	}
+
+	.card-arrow {
+		position: absolute;
+		right: 1.5rem;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #9ca3af;
+		transition: all 0.3s;
+	}
+
+	.meeting-type-card:hover .card-arrow {
+		color: #3b82f6;
+		transform: translateY(-50%) translateX(4px);
+	}
+
+	/* Empty State */
+	.empty-state {
+		grid-column: 1 / -1;
+		text-align: center;
+		padding: 4rem 2rem;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.meeting-types-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.booking-header h1 {
+			font-size: 1.5rem;
+		}
+
+		.step-label {
+			font-size: 0.65rem;
+		}
+
+		.step-number {
+			width: 32px;
+			height: 32px;
+			font-size: 0.875rem;
+		}
+	}
+</style>
+

@@ -1,0 +1,176 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block head_include %}
+<script>
+// Ensure frappe object exists for API calls - loaded early before page content
+(function() {
+    if (typeof window.frappe === 'undefined') {
+        window.frappe = {};
+    }
+
+    // Always define frappe.call even if frappe exists
+    window.frappe.call = function(opts) {
+        // Get CSRF token - check multiple places
+        const getCsrfToken = () => {
+            // Try meta tag first
+            const meta = document.querySelector('meta[name="csrf-token"]');
+            if (meta && meta.content) return meta.content;
+
+            // Try frappe.csrf_token if it exists
+            if (window.frappe && window.frappe.csrf_token) return window.frappe.csrf_token;
+
+            // Try to get from cookie
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrf_token') return decodeURIComponent(value);
+            }
+
+            return '';
+        };
+
+        // Construct proper Frappe API URL with query params for GET
+        let url = `/api/method/${opts.method}`;
+        const method = opts.type || 'GET';  // Default to GET for guest endpoints
+
+        const headers = {
+            'Accept': 'application/json'
+        };
+
+        let fetchOpts = {
+            method: method,
+            headers: headers,
+            credentials: 'same-origin'
+        };
+
+        if (method === 'GET' && opts.args) {
+            // For GET, append args as query parameters
+            const params = new URLSearchParams(opts.args);
+            url += '?' + params.toString();
+        } else if (method === 'POST') {
+            // For POST, send as JSON body
+            headers['Content-Type'] = 'application/json';
+            const csrfToken = getCsrfToken();
+            if (csrfToken) {
+                headers['X-Frappe-CSRF-Token'] = csrfToken;
+            }
+            fetchOpts.body = JSON.stringify(opts.args || {});
+        }
+
+        return fetch(url, fetchOpts)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (opts.callback) {
+                opts.callback(data);
+            }
+            return data;
+        })
+        .catch(error => {
+            console.error('frappe.call error:', error);
+            if (opts.error) {
+                opts.error(error);
+            }
+            throw error;
+        });
+    };
+
+    console.log('frappe.call polyfill loaded');
+})();
+</script>
+{% endblock %}
+
+{% block page_content %}
+<script>
+// Double-check frappe.call exists before rendering page content
+if (typeof frappe === 'undefined' || typeof frappe.call === 'undefined') {
+    console.error('frappe.call not loaded! Reinitializing...');
+    window.frappe = window.frappe || {};
+    window.frappe.call = function(opts) {
+        const getCsrfToken = () => {
+            const meta = document.querySelector('meta[name="csrf-token"]');
+            if (meta && meta.content) return meta.content;
+            if (window.frappe && window.frappe.csrf_token) return window.frappe.csrf_token;
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrf_token') return decodeURIComponent(value);
+            }
+            return '';
+        };
+        let url = `/api/method/${opts.method}`;
+        const method = opts.type || 'GET';
+        const headers = {'Accept': 'application/json'};
+        let fetchOpts = {method: method, headers: headers, credentials: 'same-origin'};
+        if (method === 'GET' && opts.args) {
+            url += '?' + new URLSearchParams(opts.args).toString();
+        } else if (method === 'POST') {
+            headers['Content-Type'] = 'application/json';
+            const csrfToken = getCsrfToken();
+            if (csrfToken) headers['X-Frappe-CSRF-Token'] = csrfToken;
+            fetchOpts.body = JSON.stringify(opts.args || {});
+        }
+        return fetch(url, fetchOpts)
+        .then(r => r.json())
+        .then(data => { if (opts.callback) opts.callback(data); return data; })
+        .catch(err => { if (opts.error) opts.error(err); console.error(err); });
+    };
+}
+</script>
+
+{% if error %}
+	{# Error State #}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card border-danger">
+					<div class="card-body text-center py-5">
+						<div class="mb-3">
+							<svg width="64" height="64" fill="currentColor" class="text-danger">
+								<use href="#exclamation-triangle-fill"/>
+							</svg>
+						</div>
+						<h2 class="text-danger mb-3">{{ title }}</h2>
+						<p class="text-muted">{{ error }}</p>
+						<a href="/" class="btn btn-primary mt-3">Go to Homepage</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- SVG Icons -->
+	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+		<symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+			<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+		</symbol>
+	</svg>
+
+{% elif rescheduled %}
+	{# Success State #}
+	{% include "templates/reschedule-booking/success.html" %}
+
+{% elif current_step == 1 %}
+	{# Step 1: Current Booking Details #}
+	{% include "templates/reschedule-booking/step1_booking_details.html" %}
+
+{% elif current_step == 2 %}
+	{# Step 2: Date Picker #}
+	{% include "templates/reschedule-booking/step2_date_picker.html" %}
+
+{% elif current_step == 3 %}
+	{# Step 3: Time Slots #}
+	{% include "templates/reschedule-booking/step3_time_slots.html" %}
+
+{% elif current_step == 4 %}
+	{# Step 4: Confirmation #}
+	{% include "templates/reschedule-booking/step4_confirmation.html" %}
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,250 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:MM-CI-{user}-{####}",
+ "creation": "2025-12-05 18:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "user",
+  "integration_type",
+  "integration_name",
+  "column_break_basic",
+  "is_active",
+  "is_primary",
+  "calendar_id",
+  "authentication_section",
+  "access_token",
+  "column_break_auth",
+  "refresh_token",
+  "token_expiry",
+  "ical_settings_section",
+  "ical_url",
+  "sync_settings_section",
+  "sync_direction",
+  "sync_past_days",
+  "column_break_sync",
+  "sync_future_days",
+  "auto_sync_enabled",
+  "sync_interval_minutes",
+  "sync_status_section",
+  "last_sync",
+  "sync_status",
+  "column_break_status",
+  "sync_error_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Information"
+  },
+  {
+   "description": "User who owns this calendar integration",
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "description": "Type of calendar service to integrate",
+   "fieldname": "integration_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Integration Type",
+   "options": "Google Calendar\nOutlook Calendar\niCal",
+   "reqd": 1
+  },
+  {
+   "description": "Friendly name for this integration (e.g., \"Work Google Calendar\")",
+   "fieldname": "integration_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Integration Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Enable/disable this calendar integration",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  },
+  {
+   "default": "0",
+   "description": "Use this as primary calendar for availability checking",
+   "fieldname": "is_primary",
+   "fieldtype": "Check",
+   "label": "Is Primary Calendar"
+  },
+  {
+   "description": "Calendar ID from the external service",
+   "fieldname": "calendar_id",
+   "fieldtype": "Data",
+   "label": "Calendar ID"
+  },
+  {
+   "fieldname": "authentication_section",
+   "fieldtype": "Section Break",
+   "label": "Authentication"
+  },
+  {
+   "description": "OAuth 2.0 access token (encrypted)",
+   "fieldname": "access_token",
+   "fieldtype": "Password",
+   "label": "Access Token"
+  },
+  {
+   "fieldname": "column_break_auth",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "OAuth 2.0 refresh token (encrypted)",
+   "fieldname": "refresh_token",
+   "fieldtype": "Password",
+   "label": "Refresh Token"
+  },
+  {
+   "description": "When the access token expires",
+   "fieldname": "token_expiry",
+   "fieldtype": "Datetime",
+   "label": "Token Expiry"
+  },
+  {
+   "depends_on": "eval:doc.integration_type=='iCal'",
+   "fieldname": "ical_settings_section",
+   "fieldtype": "Section Break",
+   "label": "iCal Settings"
+  },
+  {
+   "depends_on": "eval:doc.integration_type=='iCal'",
+   "description": "iCal feed URL (e.g., from Apple Calendar, other calendar services)",
+   "fieldname": "ical_url",
+   "fieldtype": "Data",
+   "label": "iCal URL"
+  },
+  {
+   "fieldname": "sync_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Sync Settings"
+  },
+  {
+   "default": "Two-way (Read & Write)",
+   "description": "How to sync events with external calendar",
+   "fieldname": "sync_direction",
+   "fieldtype": "Select",
+   "label": "Sync Direction",
+   "options": "One-way (Read Only)\nTwo-way (Read & Write)"
+  },
+  {
+   "default": "30",
+   "description": "Number of days in the past to sync events",
+   "fieldname": "sync_past_days",
+   "fieldtype": "Int",
+   "label": "Sync Past Days"
+  },
+  {
+   "fieldname": "column_break_sync",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "90",
+   "description": "Number of days in the future to sync events",
+   "fieldname": "sync_future_days",
+   "fieldtype": "Int",
+   "label": "Sync Future Days"
+  },
+  {
+   "default": "1",
+   "description": "Enable automatic periodic syncing",
+   "fieldname": "auto_sync_enabled",
+   "fieldtype": "Check",
+   "label": "Auto Sync Enabled"
+  },
+  {
+   "default": "15",
+   "depends_on": "eval:doc.auto_sync_enabled==1",
+   "description": "How often to sync (in minutes)",
+   "fieldname": "sync_interval_minutes",
+   "fieldtype": "Int",
+   "label": "Sync Interval (Minutes)"
+  },
+  {
+   "fieldname": "sync_status_section",
+   "fieldtype": "Section Break",
+   "label": "Sync Status"
+  },
+  {
+   "description": "Last successful sync timestamp",
+   "fieldname": "last_sync",
+   "fieldtype": "Datetime",
+   "label": "Last Sync",
+   "read_only": 1
+  },
+  {
+   "default": "Pending",
+   "description": "Current sync status",
+   "fieldname": "sync_status",
+   "fieldtype": "Select",
+   "label": "Sync Status",
+   "options": "Pending\nSuccess\nFailed\nIn Progress",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Error details from last sync attempt",
+   "fieldname": "sync_error_log",
+   "fieldtype": "Text",
+   "label": "Sync Error Log",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-05 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Calendar Integration",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Booking Confirmed</title>
+	<style>
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			margin: 0;
+			padding: 0;
+			background-color: #f5f5f5;
+		}
+		.email-container {
+			max-width: 600px;
+			margin: 20px auto;
+			background: white;
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+		}
+		.email-header {
+			background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+			color: white;
+			padding: 30px 20px;
+			text-align: center;
+		}
+		.email-header h1 {
+			margin: 0;
+			font-size: 28px;
+			font-weight: 700;
+		}
+		.email-header .checkmark {
+			width: 60px;
+			height: 60px;
+			background: white;
+			border-radius: 50%;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 15px;
+		}
+		.email-header .checkmark svg {
+			width: 35px;
+			height: 35px;
+			color: #10b981;
+		}
+		.email-body {
+			padding: 30px 20px;
+		}
+		.intro-text {
+			font-size: 16px;
+			margin-bottom: 25px;
+			color: #4b5563;
+		}
+		.booking-reference {
+			background: #f0f9ff;
+			border-left: 4px solid #3b82f6;
+			padding: 15px 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+		}
+		.booking-reference strong {
+			color: #1e40af;
+			font-size: 18px;
+		}
+		.details-section {
+			margin: 25px 0;
+		}
+		.details-section h2 {
+			font-size: 18px;
+			color: #1f2937;
+			margin-bottom: 15px;
+			border-bottom: 2px solid #e5e7eb;
+			padding-bottom: 8px;
+		}
+		.detail-row {
+			display: flex;
+			padding: 12px 0;
+			border-bottom: 1px solid #f3f4f6;
+		}
+		.detail-row:last-child {
+			border-bottom: none;
+		}
+		.detail-label {
+			font-weight: 600;
+			color: #6b7280;
+			min-width: 140px;
+		}
+		.detail-value {
+			color: #1f2937;
+			flex: 1;
+		}
+		.meeting-date-time {
+			background: #fef3c7;
+			border-left: 4px solid #f59e0b;
+			padding: 15px 20px;
+			margin: 20px 0;
+			border-radius: 4px;
+		}
+		.meeting-date-time strong {
+			color: #92400e;
+			font-size: 16px;
+			display: block;
+			margin-bottom: 5px;
+		}
+		.meeting-date-time span {
+			color: #78350f;
+			font-size: 14px;
+		}
+		.assigned-team {
+			margin-top: 10px;
+		}
+		.assigned-team .team-member {
+			display: inline-block;
+			background: #eff6ff;
+			color: #1e40af;
+			padding: 5px 12px;
+			border-radius: 20px;
+			margin-right: 8px;
+			margin-bottom: 8px;
+			font-size: 14px;
+		}
+		.actions-section {
+			margin: 30px 0;
+			text-align: center;
+		}
+		.btn {
+			display: inline-block;
+			padding: 12px 24px;
+			margin: 8px;
+			text-decoration: none;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 14px;
+			transition: all 0.3s;
+		}
+		.btn-primary {
+			background: #3b82f6;
+			color: white;
+		}
+		.btn-primary:hover {
+			background: #2563eb;
+		}
+		.btn-secondary {
+			background: #e5e7eb;
+			color: #374151;
+		}
+		.btn-secondary:hover {
+			background: #d1d5db;
+		}
+		.btn-danger {
+			background: #fef2f2;
+			color: #dc2626;
+			border: 1px solid #fecaca;
+		}
+		.btn-danger:hover {
+			background: #fee2e2;
+		}
+		.additional-notes {
+			background: #f9fafb;
+			padding: 15px;
+			border-radius: 6px;
+			margin: 20px 0;
+			font-size: 14px;
+			color: #4b5563;
+		}
+		.email-footer {
+			background: #f9fafb;
+			padding: 20px;
+			text-align: center;
+			font-size: 12px;
+			color: #6b7280;
+			border-top: 1px solid #e5e7eb;
+		}
+		.email-footer a {
+			color: #3b82f6;
+			text-decoration: none;
+		}
+		@media only screen and (max-width: 600px) {
+			.email-container {
+				margin: 0;
+				border-radius: 0;
+			}
+			.detail-row {
+				flex-direction: column;
+			}
+			.detail-label {
+				margin-bottom: 5px;
+			}
+			.btn {
+				display: block;
+				margin: 8px 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="email-container">
+		<!-- Header -->
+		<div class="email-header">
+			<div class="checkmark">
+				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+				</svg>
+			</div>
+			<h1>Booking Confirmed!</h1>
+		</div>
+
+		<!-- Body -->
+		<div class="email-body">
+			<p class="intro-text">
+				Hi {{ booking.customer_name }},
+			</p>
+			<p class="intro-text">
+				Your meeting has been successfully scheduled. We're looking forward to meeting with you!
+			</p>
+
+			<!-- Booking Reference -->
+			<div class="booking-reference">
+				<strong>Booking Reference: {{ booking.booking_reference }}</strong>
+				<p style="margin: 5px 0 0 0; font-size: 14px; color: #6b7280;">
+					Please keep this reference number for your records.
+				</p>
+			</div>
+
+			<!-- Meeting Date & Time -->
+			<div class="meeting-date-time">
+				<strong>When:</strong>
+				<span>{{ formatted_start }}</span>
+				<br>
+				<span>Duration: {{ meeting_type.duration }} minutes</span>
+			</div>
+
+			<!-- Meeting Details -->
+			<div class="details-section">
+				<h2>Meeting Details</h2>
+				<div class="detail-row">
+					<div class="detail-label">Meeting Type:</div>
+					<div class="detail-value">{{ meeting_type.meeting_name }}</div>
+				</div>
+				<div class="detail-row">
+					<div class="detail-label">Department:</div>
+					<div class="detail-value">{{ department.department_name }}</div>
+				</div>
+				<div class="detail-row">
+					<div class="detail-label">Location:</div>
+					<div class="detail-value">
+						{% if meeting_type.location_type == "Video Call" %}
+							{{ meeting_type.video_platform }} (Link will be provided closer to the meeting time)
+						{% elif meeting_type.location_type == "Phone Call" %}
+							Phone Call to {{ booking.customer_phone }}
+						{% elif meeting_type.location_type == "In-Person" %}
+							{{ booking.location or "Office location - details will be provided" }}
+						{% else %}
+							{{ meeting_type.location_type }}
+						{% endif %}
+					</div>
+				</div>
+				{% if assigned_users %}
+				<div class="detail-row">
+					<div class="detail-label">Meeting With:</div>
+					<div class="detail-value assigned-team">
+						{% for user in assigned_users %}
+							<span class="team-member">{{ user.full_name }}</span>
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+			</div>
+
+			<!-- Your Details -->
+			<div class="details-section">
+				<h2>Your Details</h2>
+				<div class="detail-row">
+					<div class="detail-label">Name:</div>
+					<div class="detail-value">{{ booking.customer_name }}</div>
+				</div>
+				<div class="detail-row">
+					<div class="detail-label">Email:</div>
+					<div class="detail-value">{{ booking.customer_email }}</div>
+				</div>
+				{% if booking.customer_phone %}
+				<div class="detail-row">
+					<div class="detail-label">Phone:</div>
+					<div class="detail-value">{{ booking.customer_phone }}</div>
+				</div>
+				{% endif %}
+			</div>
+
+			{% if booking.customer_notes %}
+			<!-- Additional Notes -->
+			<div class="additional-notes">
+				<strong>Your Notes:</strong><br>
+				{{ booking.customer_notes }}
+			</div>
+			{% endif %}
+
+			<!-- Action Buttons -->
+			<div class="actions-section">
+				<a href="{{ reschedule_url }}" class="btn btn-secondary">Reschedule Meeting</a>
+				<a href="{{ cancel_url }}" class="btn btn-danger">Cancel Booking</a>
+			</div>
+
+			<p style="font-size: 14px; color: #6b7280; margin-top: 30px;">
+				<strong>Need to make changes?</strong><br>
+				You can reschedule or cancel your booking anytime using the buttons above. If you have any questions, please don't hesitate to contact us.
+			</p>
+		</div>
+
+		<!-- Footer -->
+		<div class="email-footer">
+			<p>
+				This is an automated confirmation email for your booking.<br>
+				Please do not reply to this email directly.
+			</p>
+			<p style="margin-top: 10px;">
+				<a href="{{ site_url }}">Visit our website</a>
+			</p>
+		</div>
+	</div>
+</body>
+</html>

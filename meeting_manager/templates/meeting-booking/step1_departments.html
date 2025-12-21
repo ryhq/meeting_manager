@@ -1,0 +1,268 @@
+
+
+<div class="booking-container">
+	<!-- Progress Steps -->
+	<div class="booking-progress">
+		<div class="progress-steps">
+			<div class="progress-step active">
+				<div class="step-number">1</div>
+				<div class="step-label">Department</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">2</div>
+				<div class="step-label">Meeting Type</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">3</div>
+				<div class="step-label">Date</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">4</div>
+				<div class="step-label">Time</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">5</div>
+				<div class="step-label">Details</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">6</div>
+				<div class="step-label">Confirm</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Page Header -->
+	<div class="booking-header">
+		<h1>Select a Department</h1>
+		<p class="text-muted">Choose the department you'd like to book a meeting with</p>
+	</div>
+
+	<!-- Department Cards -->
+	<div class="department-grid">
+		{% if departments %}
+			{% for dept in departments %}
+			<a href="/meeting-booking/{{ dept.department_slug }}" class="department-card">
+				<div class="department-icon">
+					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+						<circle cx="9" cy="7" r="4"></circle>
+						<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+						<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+					</svg>
+				</div>
+				<h3>{{ dept.department_name }}</h3>
+				{% if dept.description %}
+				<p class="department-description">{{ dept.description | striptags | truncate(120) }}</p>
+				{% endif %}
+				<div class="department-meta">
+					<span class="meeting-types-count">
+						{{ dept.meeting_types_count }} meeting type{{ 's' if dept.meeting_types_count != 1 else '' }} available
+					</span>
+				</div>
+				<div class="card-arrow">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<polyline points="9 18 15 12 9 6"></polyline>
+					</svg>
+				</div>
+			</a>
+			{% endfor %}
+		{% else %}
+			<div class="empty-state">
+				<p>No departments available for booking at this time.</p>
+				<p class="text-muted">Please check back later or contact us directly.</p>
+			</div>
+		{% endif %}
+	</div>
+</div>
+
+
+
+<style>
+	.booking-container {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	/* Progress Steps */
+	.booking-progress {
+		margin-bottom: 3rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.progress-steps {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		position: relative;
+	}
+
+	.progress-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+		position: relative;
+		z-index: 1;
+	}
+
+	.step-number {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: #e5e7eb;
+		color: #6b7280;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+		transition: all 0.3s;
+	}
+
+	.progress-step.active .step-number {
+		background: #3b82f6;
+		color: white;
+	}
+
+	.step-label {
+		font-size: 0.75rem;
+		color: #6b7280;
+		text-align: center;
+	}
+
+	.progress-step.active .step-label {
+		color: #1f2937;
+		font-weight: 600;
+	}
+
+	/* Header */
+	.booking-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.booking-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.booking-header .text-muted {
+		color: #6b7280;
+		font-size: 1rem;
+	}
+
+	/* Department Grid */
+	.department-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.department-card {
+		display: block;
+		padding: 2rem;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		background: white;
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.3s;
+		position: relative;
+		cursor: pointer;
+	}
+
+	.department-card:hover {
+		border-color: #3b82f6;
+		box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.department-icon {
+		color: #3b82f6;
+		margin-bottom: 1rem;
+	}
+
+	.department-card h3 {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: #1f2937;
+		margin-bottom: 0.75rem;
+	}
+
+	.department-description {
+		color: #6b7280;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		margin-bottom: 1rem;
+	}
+
+	.department-meta {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid #e5e7eb;
+	}
+
+	.meeting-types-count {
+		color: #6b7280;
+		font-size: 0.85rem;
+	}
+
+	.card-arrow {
+		position: absolute;
+		right: 1.5rem;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #9ca3af;
+		transition: all 0.3s;
+	}
+
+	.department-card:hover .card-arrow {
+		color: #3b82f6;
+		transform: translateY(-50%) translateX(4px);
+	}
+
+	/* Empty State */
+	.empty-state {
+		grid-column: 1 / -1;
+		text-align: center;
+		padding: 4rem 2rem;
+	}
+
+	.empty-state p {
+		margin-bottom: 0.5rem;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.department-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.progress-steps {
+			overflow-x: auto;
+			padding-bottom: 1rem;
+		}
+
+		.step-label {
+			font-size: 0.65rem;
+		}
+
+		.step-number {
+			width: 32px;
+			height: 32px;
+			font-size: 0.875rem;
+		}
+
+		.booking-header h1 {
+			font-size: 1.5rem;
+		}
+	}
+</style>
+

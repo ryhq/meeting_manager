@@ -1,0 +1,488 @@
+
+
+<div class="booking-container">
+	<!-- Progress Steps -->
+	<div class="booking-progress">
+		<div class="progress-steps">
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Department</div>
+			</div>
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Meeting Type</div>
+			</div>
+			<div class="progress-step completed">
+				<div class="step-number">✓</div>
+				<div class="step-label">Date</div>
+			</div>
+			<div class="progress-step active">
+				<div class="step-number">4</div>
+				<div class="step-label">Time</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">5</div>
+				<div class="step-label">Details</div>
+			</div>
+			<div class="progress-step">
+				<div class="step-number">6</div>
+				<div class="step-label">Confirm</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Breadcrumb -->
+	<div class="breadcrumb-nav">
+		<a href="/meeting-booking/{{ department.department_slug }}/{{ meeting_type.meeting_slug }}" class="breadcrumb-link">
+			← Back to Date Selection
+		</a>
+	</div>
+
+	<!-- Page Header -->
+	<div class="booking-header">
+		<h1>Select a Time</h1>
+		<p class="text-muted">{{ meeting_type.meeting_name }} on {{ selected_date_display }}</p>
+		<p class="timezone-info" id="timezone-display">
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<circle cx="12" cy="12" r="10"></circle>
+				<line x1="2" y1="12" x2="22" y2="12"></line>
+				<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+			</svg>
+			Detecting timezone...
+		</p>
+	</div>
+
+	<!-- Time Slots Container -->
+	<div class="time-slots-container">
+		<!-- Loading State -->
+		<div id="slots-loading" class="loading-state">
+			<div class="spinner"></div>
+			<p>Loading available time slots...</p>
+		</div>
+
+		<!-- Time Slots Grid -->
+		<div id="slots-grid" class="slots-grid" style="display: none;">
+			<!-- Time slots will be inserted here by JavaScript -->
+		</div>
+
+		<!-- Empty State -->
+		<div id="slots-empty" class="empty-state" style="display: none;">
+			<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<circle cx="12" cy="12" r="10"></circle>
+				<line x1="12" y1="8" x2="12" y2="12"></line>
+				<line x1="12" y1="16" x2="12.01" y2="16"></line>
+			</svg>
+			<h3>No Available Times</h3>
+			<p>There are no available time slots for this date. Please select a different date.</p>
+			<a href="/meeting-booking/{{ department.department_slug }}/{{ meeting_type.meeting_slug }}" class="btn-primary">
+				Choose Another Date
+			</a>
+		</div>
+
+		<!-- Error State -->
+		<div id="slots-error" class="error-state" style="display: none;">
+			<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<circle cx="12" cy="12" r="10"></circle>
+				<line x1="12" y1="8" x2="12" y2="12"></line>
+				<line x1="12" y1="16" x2="12.01" y2="16"></line>
+			</svg>
+			<p id="error-message"></p>
+			<button onclick="loadTimeSlots()" class="retry-btn">Try Again</button>
+		</div>
+	</div>
+
+	<!-- Hidden data for JavaScript -->
+	<div style="display: none;">
+		<input type="hidden" id="department-slug" value="{{ department.department_slug }}">
+		<input type="hidden" id="meeting-type-slug" value="{{ meeting_type.meeting_slug }}">
+		<input type="hidden" id="selected-date" value="{{ selected_date }}">
+		<input type="hidden" id="meeting-duration" value="{{ meeting_type.duration }}">
+	</div>
+</div>
+
+
+
+<style>
+	.booking-container {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	/* Progress Steps */
+	.booking-progress {
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.progress-steps {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.progress-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+	}
+
+	.step-number {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: #e5e7eb;
+		color: #6b7280;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+
+	.progress-step.active .step-number {
+		background: #3b82f6;
+		color: white;
+	}
+
+	.progress-step.completed .step-number {
+		background: #10b981;
+		color: white;
+	}
+
+	.step-label {
+		font-size: 0.75rem;
+		color: #6b7280;
+	}
+
+	.progress-step.active .step-label,
+	.progress-step.completed .step-label {
+		color: #1f2937;
+		font-weight: 600;
+	}
+
+	/* Breadcrumb */
+	.breadcrumb-nav {
+		margin-bottom: 1.5rem;
+	}
+
+	.breadcrumb-link {
+		color: #6b7280;
+		text-decoration: none;
+		font-size: 0.9rem;
+		transition: color 0.2s;
+	}
+
+	.breadcrumb-link:hover {
+		color: #3b82f6;
+	}
+
+	/* Header */
+	.booking-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.booking-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.booking-header .text-muted {
+		color: #6b7280;
+		font-size: 1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.timezone-info {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: #6b7280;
+		font-size: 0.875rem;
+		margin-top: 0.5rem;
+	}
+
+	/* Time Slots Container */
+	.time-slots-container {
+		background: white;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		padding: 2rem;
+		min-height: 300px;
+	}
+
+	.slots-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		gap: 1rem;
+	}
+
+	.time-slot-btn {
+		padding: 1rem;
+		border: 2px solid #e5e7eb;
+		border-radius: 8px;
+		background: white;
+		color: #1f2937;
+		font-weight: 600;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: all 0.2s;
+		text-align: center;
+	}
+
+	.time-slot-btn:hover {
+		border-color: #3b82f6;
+		background: #eff6ff;
+		color: #3b82f6;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+	}
+
+	.time-slot-btn:active {
+		transform: translateY(0);
+	}
+
+	/* Loading State */
+	.loading-state {
+		text-align: center;
+		padding: 3rem 1rem;
+	}
+
+	.spinner {
+		width: 50px;
+		height: 50px;
+		border: 4px solid #e5e7eb;
+		border-top-color: #3b82f6;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+		margin: 0 auto 1rem;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	.loading-state p {
+		color: #6b7280;
+		font-size: 1rem;
+	}
+
+	/* Empty State */
+	.empty-state {
+		text-align: center;
+		padding: 3rem 1rem;
+	}
+
+	.empty-state svg {
+		color: #9ca3af;
+		margin-bottom: 1.5rem;
+	}
+
+	.empty-state h3 {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.empty-state p {
+		color: #6b7280;
+		margin-bottom: 1.5rem;
+	}
+
+	.btn-primary {
+		display: inline-block;
+		padding: 0.875rem 1.5rem;
+		background: #3b82f6;
+		color: white;
+		border-radius: 8px;
+		text-decoration: none;
+		font-weight: 600;
+		transition: all 0.2s;
+	}
+
+	.btn-primary:hover {
+		background: #2563eb;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+	}
+
+	/* Error State */
+	.error-state {
+		text-align: center;
+		padding: 3rem 1rem;
+	}
+
+	.error-state svg {
+		color: #ef4444;
+		margin-bottom: 1rem;
+	}
+
+	.error-state p {
+		color: #6b7280;
+		font-size: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.retry-btn {
+		background: #3b82f6;
+		color: white;
+		border: none;
+		padding: 0.75rem 1.5rem;
+		border-radius: 8px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.retry-btn:hover {
+		background: #2563eb;
+		transform: translateY(-1px);
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.booking-header h1 {
+			font-size: 1.5rem;
+		}
+
+		.time-slots-container {
+			padding: 1.5rem;
+		}
+
+		.slots-grid {
+			grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+		}
+
+		.step-label {
+			font-size: 0.65rem;
+		}
+
+		.step-number {
+			width: 32px;
+			height: 32px;
+			font-size: 0.875rem;
+		}
+	}
+</style>
+
+
+<script>
+	// Get hidden values
+	const departmentSlug = document.getElementById('department-slug').value;
+	const meetingTypeSlug = document.getElementById('meeting-type-slug').value;
+	const selectedDate = document.getElementById('selected-date').value;
+	const meetingDuration = document.getElementById('meeting-duration').value;
+
+	// Elements
+	const timezoneDisplay = document.getElementById('timezone-display');
+	const slotsLoading = document.getElementById('slots-loading');
+	const slotsGrid = document.getElementById('slots-grid');
+	const slotsEmpty = document.getElementById('slots-empty');
+	const slotsError = document.getElementById('slots-error');
+	const errorMessage = document.getElementById('error-message');
+
+	// Detect visitor timezone
+	let visitorTimezone = 'UTC';
+	function detectTimezone() {
+		try {
+			visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+			timezoneDisplay.innerHTML = `
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="2" y1="12" x2="22" y2="12"></line>
+					<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+				</svg>
+				Times shown in ${visitorTimezone}
+			`;
+		} catch (e) {
+			console.error('Could not detect timezone:', e);
+			visitorTimezone = 'UTC';
+			timezoneDisplay.textContent = 'Times shown in UTC';
+		}
+	}
+
+	// Time slots data
+	let timeSlots = [];
+
+	// Initialize
+	detectTimezone();
+	loadTimeSlots();
+
+	// Load time slots from API
+	function loadTimeSlots() {
+		// Show loading state
+		slotsLoading.style.display = 'block';
+		slotsGrid.style.display = 'none';
+		slotsEmpty.style.display = 'none';
+		slotsError.style.display = 'none';
+
+		frappe.call({
+			method: 'meeting_manager.meeting_manager.api.public.get_available_slots',
+			args: {
+				department_slug: departmentSlug,
+				meeting_type_slug: meetingTypeSlug,
+				date: selectedDate,
+				visitor_timezone: visitorTimezone
+			},
+			callback: function(r) {
+				if (r.message && r.message.success) {
+					timeSlots = r.message.slots || [];
+					if (timeSlots.length > 0) {
+						renderTimeSlots();
+					} else {
+						showEmpty();
+					}
+				} else {
+					showError(r.message?.message || 'Failed to load time slots');
+				}
+			},
+			error: function(err) {
+				console.error('Error loading time slots:', err);
+				showError('An error occurred while loading time slots');
+			}
+		});
+	}
+
+	// Render time slots
+	function renderTimeSlots() {
+		slotsGrid.innerHTML = '';
+
+		timeSlots.forEach(slot => {
+			const slotBtn = document.createElement('button');
+			slotBtn.className = 'time-slot-btn';
+			// Display just the start_time - end_time in clean format
+			slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
+			slotBtn.addEventListener('click', () => {
+				// Navigate to customer details page with start_time
+				window.location.href = `/meeting-booking/${departmentSlug}/${meetingTypeSlug}/${selectedDate}/${slot.start_time}`;
+			});
+			slotsGrid.appendChild(slotBtn);
+		});
+
+		// Show grid
+		slotsLoading.style.display = 'none';
+		slotsGrid.style.display = 'grid';
+	}
+
+	// Show empty state
+	function showEmpty() {
+		slotsLoading.style.display = 'none';
+		slotsGrid.style.display = 'none';
+		slotsEmpty.style.display = 'block';
+	}
+
+	// Show error
+	function showError(message) {
+		errorMessage.textContent = message;
+		slotsLoading.style.display = 'none';
+		slotsGrid.style.display = 'none';
+		slotsError.style.display = 'block';
+	}
+</script>
+

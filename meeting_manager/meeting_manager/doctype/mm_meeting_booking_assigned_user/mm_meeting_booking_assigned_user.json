@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-08 09:33:38.910120",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "is_primary_host",
+  "column_break_omqi",
+  "assigned_at",
+  "assigned_by"
+ ],
+ "fields": [
+  {
+   "description": "Team member assigned to this booking",
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "description": "Is this the primary host for the meeting",
+   "fieldname": "is_primary_host",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Primary Host"
+  },
+  {
+   "fieldname": "column_break_omqi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Now",
+   "description": "When user was assigned",
+   "fieldname": "assigned_at",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Assigned At",
+   "read_only": 1
+  },
+  {
+   "description": "Who assigned this user",
+   "fieldname": "assigned_by",
+   "fieldtype": "Link",
+   "label": "Assigned By",
+   "options": "User",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-08 09:39:18.963446",
+ "modified_by": "Administrator",
+ "module": "Meeting Manager",
+ "name": "MM Meeting Booking Assigned User",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

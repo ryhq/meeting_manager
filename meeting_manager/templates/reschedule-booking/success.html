@@ -1,0 +1,372 @@
+
+<div class="booking-container">
+	<!-- Success Icon -->
+	<div class="success-icon">
+		<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<circle cx="12" cy="12" r="10"></circle>
+			<polyline points="8 12 11 15 16 9"></polyline>
+		</svg>
+	</div>
+
+	<!-- Success Header -->
+	<div class="success-header">
+		<h1>Booking Rescheduled Successfully!</h1>
+		<p class="text-muted">Your meeting has been rescheduled to the new date and time</p>
+	</div>
+
+	<!-- Comparison Card -->
+	<div class="comparison-container">
+		<div class="comparison-card old-time-card">
+			<div class="card-badge">Previous Booking</div>
+			<div class="time-info">
+				<div class="date">{{ result.old_datetime.date }}</div>
+				<div class="time">{{ result.old_datetime.time }}</div>
+			</div>
+			{% if result.old_assigned_to %}
+			<div class="assigned-to">with {{ result.old_assigned_to }}</div>
+			{% endif %}
+		</div>
+
+		<div class="arrow-icon">
+			<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<line x1="5" y1="12" x2="19" y2="12"></line>
+				<polyline points="12 5 19 12 12 19"></polyline>
+			</svg>
+		</div>
+
+		<div class="comparison-card new-time-card">
+			<div class="card-badge">New Booking</div>
+			<div class="time-info">
+				<div class="date">{{ result.new_datetime.date }}</div>
+				<div class="time">{{ result.new_datetime.time }}</div>
+			</div>
+			{% if result.new_assigned_to %}
+			<div class="assigned-to">with {{ result.new_assigned_to }}</div>
+			{% endif %}
+		</div>
+	</div>
+
+	{% if result.member_changed %}
+	<!-- Member Change Notice -->
+	<div class="notice-box warning">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+			<line x1="12" y1="9" x2="12" y2="13"></line>
+			<line x1="12" y1="17" x2="12.01" y2="17"></line>
+		</svg>
+		<div>
+			<h4>Team Member Changed</h4>
+			<p>Your meeting host has been reassigned due to availability changes.</p>
+			<p><strong>Previous:</strong> {{ result.old_assigned_to }}</p>
+			<p><strong>New:</strong> {{ result.new_assigned_to }}</p>
+		</div>
+	</div>
+	{% endif %}
+
+	<!-- What's Next -->
+	<div class="notice-box info">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<circle cx="12" cy="12" r="10"></circle>
+			<line x1="12" y1="16" x2="12" y2="12"></line>
+			<line x1="12" y1="8" x2="12.01" y2="8"></line>
+		</svg>
+		<div>
+			<h4>What's Next?</h4>
+			<ul>
+				<li>A new confirmation email has been sent to {{ booking.customer_email }}</li>
+				<li>The email contains updated meeting details</li>
+				<li>You'll find new reschedule and cancel links in the email</li>
+				<li>Add the meeting to your calendar using the provided details</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Booking Reference -->
+	<div class="reference-box">
+		<div class="reference-label">Booking Reference</div>
+		<div class="reference-value">{{ booking.booking_id }}</div>
+		<div class="reference-hint">Keep this reference number for your records</div>
+	</div>
+
+	<!-- Action Button -->
+	<div class="action-buttons">
+		<a href="/" class="btn-primary">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+				<polyline points="9 22 9 12 15 12 15 22"></polyline>
+			</svg>
+			Back to Home
+		</a>
+	</div>
+</div>
+
+<style>
+	.booking-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	/* Success Icon */
+	.success-icon {
+		text-align: center;
+		margin-bottom: 2rem;
+		color: #10b981;
+	}
+
+	.success-icon svg {
+		animation: scaleIn 0.5s ease-out;
+	}
+
+	@keyframes scaleIn {
+		0% {
+			transform: scale(0);
+			opacity: 0;
+		}
+		50% {
+			transform: scale(1.1);
+		}
+		100% {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+
+	/* Success Header */
+	.success-header {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+
+	.success-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.success-header .text-muted {
+		color: #6b7280;
+		font-size: 1rem;
+	}
+
+	/* Comparison Container */
+	.comparison-container {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 1.5rem;
+		align-items: center;
+		margin-bottom: 2rem;
+	}
+
+	.comparison-card {
+		background: white;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		padding: 2rem;
+		text-align: center;
+	}
+
+	.old-time-card {
+		background: #f9fafb;
+		border-color: #d1d5db;
+	}
+
+	.new-time-card {
+		background: #f0fdf4;
+		border-color: #10b981;
+	}
+
+	.card-badge {
+		display: inline-block;
+		padding: 0.25rem 0.75rem;
+		border-radius: 9999px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		margin-bottom: 1rem;
+	}
+
+	.old-time-card .card-badge {
+		background: #fef3c7;
+		color: #92400e;
+	}
+
+	.new-time-card .card-badge {
+		background: #d1fae5;
+		color: #065f46;
+	}
+
+	.time-info {
+		margin-top: 1rem;
+	}
+
+	.date {
+		font-size: 1rem;
+		color: #6b7280;
+		margin-bottom: 0.5rem;
+	}
+
+	.time {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+	}
+
+	.assigned-to {
+		font-size: 0.875rem;
+		color: #6b7280;
+		margin-top: 0.5rem;
+	}
+
+	.arrow-icon {
+		color: #10b981;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Notice Box */
+	.notice-box {
+		display: flex;
+		gap: 1rem;
+		border-radius: 12px;
+		padding: 1.5rem;
+		margin-bottom: 2rem;
+		align-items: flex-start;
+	}
+
+	.notice-box.info {
+		background: #eff6ff;
+		border: 2px solid #3b82f6;
+	}
+
+	.notice-box.info svg {
+		color: #3b82f6;
+	}
+
+	.notice-box.info h4 {
+		color: #1e40af;
+	}
+
+	.notice-box.info ul,
+	.notice-box.info p {
+		color: #1e3a8a;
+	}
+
+	.notice-box.warning {
+		background: #fffbeb;
+		border: 2px solid #fbbf24;
+	}
+
+	.notice-box.warning svg {
+		color: #f59e0b;
+	}
+
+	.notice-box.warning h4 {
+		color: #92400e;
+	}
+
+	.notice-box.warning p {
+		color: #78350f;
+	}
+
+	.notice-box svg {
+		flex-shrink: 0;
+	}
+
+	.notice-box h4 {
+		font-size: 1rem;
+		font-weight: 600;
+		margin: 0 0 0.75rem 0;
+	}
+
+	.notice-box ul {
+		margin: 0;
+		padding-left: 1.25rem;
+	}
+
+	.notice-box li {
+		margin-bottom: 0.5rem;
+		font-size: 0.875rem;
+	}
+
+	.notice-box p {
+		margin: 0 0 0.5rem 0;
+		font-size: 0.875rem;
+	}
+
+	/* Reference Box */
+	.reference-box {
+		background: white;
+		border: 2px solid #e5e7eb;
+		border-radius: 12px;
+		padding: 2rem;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+
+	.reference-label {
+		font-size: 0.875rem;
+		color: #6b7280;
+		margin-bottom: 0.5rem;
+	}
+
+	.reference-value {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.5rem;
+		font-family: monospace;
+	}
+
+	.reference-hint {
+		font-size: 0.75rem;
+		color: #9ca3af;
+	}
+
+	/* Action Buttons */
+	.action-buttons {
+		display: flex;
+		justify-content: center;
+	}
+
+	.btn-primary {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 1rem 2rem;
+		background: #3b82f6;
+		color: white;
+		border-radius: 8px;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all 0.2s;
+	}
+
+	.btn-primary:hover {
+		background: #2563eb;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.success-header h1 {
+			font-size: 1.5rem;
+		}
+
+		.comparison-container {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+
+		.arrow-icon {
+			transform: rotate(90deg);
+		}
+
+		.time {
+			font-size: 1.25rem;
+		}
+	}
+</style>
